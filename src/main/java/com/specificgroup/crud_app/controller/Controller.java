@@ -52,7 +52,6 @@ public abstract class Controller {
                 }
             }
             case DELETE -> {
-                System.out.println(requestType);
                 if (requestType.matches(DELETE_REQUEST)) {
                     statusCode = delete(httpExchange) ? STATUS_NO_CONTENT : STATUS_NOT_FOUND;
                 } else {

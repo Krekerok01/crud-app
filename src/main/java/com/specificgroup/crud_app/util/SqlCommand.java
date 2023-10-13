@@ -68,6 +68,15 @@ public final class SqlCommand {
 
     }
 
+    public final static class Delete {
+        private Delete() {
+            throw new UnsupportedOperationException();
+        }
+
+        public static final String DELETE_BY_ID = "DELETE from %s WHERE id=?";
+
+    }
+
     public final static class Tables {
 
         private Tables() {

@@ -13,6 +13,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.specificgroup.crud_app.util.Attributes.*;
 
@@ -66,6 +67,12 @@ public class TutorController extends Controller {
 
     @Override
     boolean delete(final HttpExchange httpExchange) {
-        return true;
+        URI uri = httpExchange.getRequestURI();
+        Optional<String> id = readAttributes(uri, ID);
+        boolean result = false;
+        if (id.isPresent()) {
+            result = service.deleteById(id.get());
+        }
+        return result;
     }
 }

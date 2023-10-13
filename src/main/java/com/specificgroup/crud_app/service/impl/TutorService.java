@@ -99,6 +99,15 @@ public class TutorService implements Service {
 
     @Override
     public boolean deleteById(String id) {
-        return false;
+        boolean result = false;
+        if (id != null) {
+            try {
+                Validator<String> validatorId = Validator.of(id).validator(i -> i.matches(DIGIT), "Tutor id is not digit.");
+                result = validatorId.isEmpty() && tutorDao.delete(Long.parseLong(validatorId.get()));
+            } catch (NullPointerException e){
+                return false;
+            }
+        }
+        return result;
     }
 }

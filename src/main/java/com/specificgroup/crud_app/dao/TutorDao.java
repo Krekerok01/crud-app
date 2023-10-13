@@ -17,11 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 import static com.specificgroup.crud_app.util.SqlCommand.Constant.INVALID_RESULT;
+import static com.specificgroup.crud_app.util.SqlCommand.Delete.DELETE_BY_ID;
 import static com.specificgroup.crud_app.util.SqlCommand.Insert.*;
-import static com.specificgroup.crud_app.util.SqlCommand.Select.*;
-import static com.specificgroup.crud_app.util.SqlCommand.Tables.*;
+import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT;
+import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_SETTING_TUTORS;
+import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_CONTACTS;
+import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_TUTORS;
 import static com.specificgroup.crud_app.util.SqlCommand.Update.*;
-import static com.specificgroup.crud_app.util.SqlCommand.Update.UPDATE_WHERE_ID;
 
 public class TutorDao implements Dao<Tutor> {
     private static ConnectionPool connectionPool;
@@ -135,7 +137,17 @@ public class TutorDao implements Dao<Tutor> {
 
     @Override
     public boolean delete(long id) {
-        return true;
+        int result;
+        //delete contact
+        String delete = DELETE_BY_ID.formatted(TABLE_TUTORS);
+        try (Connection connection = connectionPool.openConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
+            preparedStatement.setLong(1, id);
+            result = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result == 1;
     }
 
     public static class Builder {
