@@ -48,6 +48,26 @@ public final class SqlCommand {
 
     }
 
+    public final static class Update {
+
+        private Update() {
+            throw new UnsupportedOperationException();
+        }
+
+        public static final String UPDATE = """
+                UPDATE %s
+                SET
+                """;
+        public static final String UPDATE_NAME = "name=?";
+        public static final String UPDATE_AGE = "age=?";
+        public static final String UPDATE_SPECIALIZATION = "specialization=?";
+        public static final String UPDATE_PHONE = "phone=?";
+        public static final String UPDATE_EMAIL = "email=?";
+        public static final String UPDATE_COMMA = ",";
+        public static final String UPDATE_WHERE_ID = " WHERE id=?";
+
+    }
+
     public final static class Tables {
 
         private Tables() {

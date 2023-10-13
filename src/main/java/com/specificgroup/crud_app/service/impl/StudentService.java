@@ -3,6 +3,7 @@ package com.specificgroup.crud_app.service.impl;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dao.Dao;
 import com.specificgroup.crud_app.dto.CreateRequest;
+import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
@@ -78,8 +79,19 @@ public class StudentService implements Service {
     }
 
     @Override
-    public Long update() {
-        return 1L;
+    public Long update(UpdateRequest updateRequest) {
+        long result = INVALID_RESULT;
+        if (updateRequest != null) {
+            Validator<UpdateRequest> validator = Validator.of(updateRequest)
+                    .validator(request -> request.getId().matches(DIGIT), "Student id is not digit.")
+                    .validator(request -> request.getName().matches(NAME_VALIDATION), "Name is not a string")
+                    .validator(request -> request.getAge().matches(AGE_VALIDATION), "Age is not a digit")
+                    .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
+                    .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+
+            result = validator.isEmpty() ? studentDao.update(updateRequest) : result;
+        }
+        return result;
     }
 
     @Override

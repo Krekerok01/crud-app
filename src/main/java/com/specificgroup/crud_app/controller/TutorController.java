@@ -2,6 +2,7 @@ package com.specificgroup.crud_app.controller;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dto.CreateRequest;
+import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
 import com.sun.net.httpserver.HttpExchange;
@@ -50,7 +51,17 @@ public class TutorController extends Controller {
 
     @Override
     Long update(final HttpExchange httpExchange) {
-        return 1L;
+        JsonObject jsonObject = readRequestFromJson(httpExchange);
+        UpdateRequest build = UpdateRequest.builder()
+                .id(jsonObject.getString(ID))
+                .name(jsonObject.getString(NAME))
+                .age(jsonObject.getString(AGE))
+                .specialization(jsonObject.getString(SPECIALIZATION))
+                .phone(jsonObject.getString(PHONE))
+                .email(jsonObject.getString(EMAIL))
+                .build();
+
+        return service.update(build);
     }
 
     @Override

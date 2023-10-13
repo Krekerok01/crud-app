@@ -3,6 +3,7 @@ package com.specificgroup.crud_app.service.impl;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dao.Dao;
 import com.specificgroup.crud_app.dto.CreateRequest;
+import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.service.Service;
@@ -81,8 +82,19 @@ public class TutorService implements Service {
     }
 
     @Override
-    public Long update() {
-        return null;
+    public Long update(UpdateRequest updateRequest) {
+        long result = INVALID_RESULT;
+        if (updateRequest != null) {
+            Validator<UpdateRequest> validator = Validator.of(updateRequest)
+                    .validator(request -> request.getId().matches(DIGIT), "Tutor id is not digit.")
+                    .validator(request -> request.getName().matches(NAME_VALIDATION), "Name is not a string")
+                    .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization is not a string")
+                    .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
+                    .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+
+            result = validator.isEmpty() ? tutorDao.update(updateRequest) : result;
+        }
+        return result;
     }
 
     @Override
