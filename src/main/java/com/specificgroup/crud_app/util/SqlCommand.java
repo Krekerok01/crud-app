@@ -36,6 +36,12 @@ public final class SqlCommand {
                          JOIN contacts c on c.id = e.contact_id
                 WHERE 
                 """;
+        public static final String SELECT_CONTACT_DETAIL_ID_BY_ENTITY_ID =  """
+                SELECT c.id as contact_id
+                FROM %s e
+                         JOIN contacts c on c.id = e.contact_id
+                WHERE e.id=?
+                """;
         public static final String SELECT_ID = "e.id=?";
         public static final String SELECT_NAME = "e.name=?";
         public static final String SELECT_AGE = "e.age=?";

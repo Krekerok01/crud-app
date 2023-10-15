@@ -7,6 +7,7 @@ import com.specificgroup.crud_app.util.ConnectionPool;
 import com.specificgroup.crud_app.util.ConnectionPoolAbstract;
 import com.specificgroup.crud_app.util.JdbcSpecification;
 import com.specificgroup.crud_app.util.JdbcUtil;
+import com.specificgroup.crud_app.util.Mapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,6 +21,8 @@ import static com.specificgroup.crud_app.util.SqlCommand.Constant.INVALID_RESULT
 import static com.specificgroup.crud_app.util.SqlCommand.Delete.DELETE_BY_ID;
 import static com.specificgroup.crud_app.util.SqlCommand.Insert.*;
 import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT;
+import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_CONTACT_DETAIL_ID_BY_ENTITY_ID;
+import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_ID;
 import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_SETTING_STUDENTS;
 import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_CONTACTS;
 import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_STUDENTS;
@@ -84,7 +87,7 @@ public class StudentDao implements Dao<Student> {
     }
 
     @Override
-    public Long update(UpdateRequest request) {
+    public Long update(UpdateRequest request, Long contactDetailsId) {
         long result = INVALID_RESULT;
         String studentsSqlQuery = buildStudentsSqlQuery();
         String contactsSqlQuery = buildContactsSqlQuery();
@@ -98,7 +101,7 @@ public class StudentDao implements Dao<Student> {
         Object[] contactsParams = {
                 request.getPhone(),
                 request.getEmail(),
-                Long.parseLong(request.getId())
+                contactDetailsId
         };
 
         try (Connection connection = connectionPool.openConnection();
@@ -119,24 +122,6 @@ public class StudentDao implements Dao<Student> {
         return result;
     }
 
-    private String buildContactsSqlQuery() {
-        String sql = UPDATE.formatted(TABLE_CONTACTS);
-        StringBuilder sqlBuilder = new StringBuilder(sql);
-        sqlBuilder.append(UPDATE_PHONE).append(UPDATE_COMMA)
-                .append(UPDATE_EMAIL)
-                .append(UPDATE_WHERE_ID);
-        return sqlBuilder.toString();
-    }
-
-    private String buildStudentsSqlQuery() {
-        String sql = UPDATE.formatted(TABLE_STUDENTS);
-        StringBuilder sqlBuilder = new StringBuilder(sql);
-        sqlBuilder.append(UPDATE_NAME).append(UPDATE_COMMA)
-                .append(UPDATE_AGE)
-                .append(UPDATE_WHERE_ID);
-        return sqlBuilder.toString();
-    }
-
     @Override
     public boolean delete(long id) {
         int result;
@@ -150,6 +135,41 @@ public class StudentDao implements Dao<Student> {
             throw new RuntimeException(e);
         }
         return result == 1;
+    }
+
+    @Override
+    public Long getContactDetailsIdByMainEntityId(Long id) {
+        String sqlQuery = SELECT_CONTACT_DETAIL_ID_BY_ENTITY_ID.formatted(TABLE_STUDENTS);
+        Long contactDetailsId = null;
+        try (Connection connection = connectionPool.openConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                contactDetailsId = resultSet.getLong("contact_id");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return contactDetailsId;
+    }
+
+    private String buildContactsSqlQuery() {
+        String sql = UPDATE.formatted(TABLE_CONTACTS);
+        StringBuilder sqlBuilder = new StringBuilder(sql);
+        sqlBuilder.append(UPDATE_PHONE).append(UPDATE_COMMA)
+            .append(UPDATE_EMAIL)
+            .append(UPDATE_WHERE_ID);
+        return sqlBuilder.toString();
+    }
+
+    private String buildStudentsSqlQuery() {
+        String sql = UPDATE.formatted(TABLE_STUDENTS);
+        StringBuilder sqlBuilder = new StringBuilder(sql);
+        sqlBuilder.append(UPDATE_NAME).append(UPDATE_COMMA)
+            .append(UPDATE_AGE)
+            .append(UPDATE_WHERE_ID);
+        return sqlBuilder.toString();
     }
 
     public static class Builder {

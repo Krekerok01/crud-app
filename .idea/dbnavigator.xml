@@ -5,6 +5,22 @@
     <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
+  <component name="DBNavigator.Project.DataExportManager">
+    <export-instructions>
+      <create-header value="true" />
+      <friendly-headers value="false" />
+      <quote-values-containing-separator value="true" />
+      <quote-all-values value="false" />
+      <value-separator value="" />
+      <file-name value="" />
+      <file-location value="" />
+      <scope value="GLOBAL" />
+      <destination value="FILE" />
+      <format value="EXCEL" />
+      <charset value="windows-1251" />
+      <charset value="windows-1251" />
+    </export-instructions>
+  </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
@@ -12,20 +28,30 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="53a8aa30-c9ce-45b4-85ec-f89df7262cd4">
-      <console name="DB" type="STANDARD" schema="" session="Main" />
+    <connection id="e612115f-14ef-4a7d-9492-a9374842cf80">
+      <console name="Connection" type="STANDARD" schema="information_schema" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" object-ref="schemas/public/tables/tutors" />
+      <object connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" object-ref="schemas/public/tables/contacts" />
+      <object connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" object-ref="schemas/public/tables/students" />
+    </open-files>
+  </component>
+  <component name="DBNavigator.Project.DatabaseSessionManager">
+    <connection id="e612115f-14ef-4a7d-9492-a9374842cf80" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="53a8aa30-c9ce-45b4-85ec-f89df7262cd4" dataset="public.students" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="53a8aa30-c9ce-45b4-85ec-f89df7262cd4" dataset="public.tutors" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="53a8aa30-c9ce-45b4-85ec-f89df7262cd4" dataset="public.contacts" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" dataset="public.students" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" dataset="public.tutors" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" dataset="public.contacts" active-filter-id="EMPTY_FILTER" />
+  </component>
+  <component name="DBNavigator.Project.EditorStateManager">
+    <last-used-providers />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />
@@ -38,28 +64,35 @@
     </execution-history>
     <argument-values-cache />
   </component>
+  <component name="DBNavigator.Project.ObjectDependencyManager">
+    <last-used-dependency-type value="INCOMING" />
+  </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
   </component>
+  <component name="DBNavigator.Project.ParserDiagnosticsManager">
+    <diagnostics-history />
+  </component>
+  <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
+    <recently-used-interfaces />
+  </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="53a8aa30-c9ce-45b4-85ec-f89df7262cd4" active="true" signed="true">
+      <connection id="e612115f-14ef-4a7d-9492-a9374842cf80" active="true" signed="true">
         <database>
-          <name value="DB" />
+          <name value="Connection" />
           <description value="" />
           <database-type value="POSTGRES" />
           <config-type value="BASIC" />
-          <database-version value="16.0" />
-          <driver-source value="BUNDLED" />
+          <database-version value="15.4" />
+          <driver-source value="BUILTIN" />
           <driver-library value="" />
           <driver value="" />
           <url-type value="DATABASE" />
           <host value="localhost" />
           <port value="5432" />
           <database value="crudappdb" />
-          <tns-folder value="" />
-          <tns-profile value="" />
           <type value="USER_PASSWORD" />
           <user value="postgres" />
           <deprecated-pwd value="cGFzc3dvcmQ=" />
@@ -92,20 +125,13 @@
           <restore-workspace value="true" />
           <restore-workspace-deep value="false" />
           <environment-type value="default" />
-          <connectivity-timeout value="30" />
+          <connectivity-timeout value="10" />
           <idle-time-to-disconnect value="30" />
           <idle-time-to-disconnect-pool value="5" />
           <credential-expiry-time value="10" />
           <max-connection-pool-size value="7" />
           <alternative-statement-delimiter value="" />
         </details>
-        <debugger>
-          <compile-dependencies value="true" />
-          <tcp-driver-tunneling value="false" />
-          <tcp-host-address value="" />
-          <tcp-port-from value="4000" />
-          <tcp-port-to value="4999" />
-        </debugger>
         <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
           <object-type-filter>
             <object-type name="SCHEMA" enabled="true" />
@@ -488,6 +514,7 @@
       </compiler>
       <debugger>
         <debugger-type value="ASK" />
+        <use-generic-runners value="true" />
       </debugger>
     </operation-settings>
     <ddl-file-settings>
@@ -537,6 +564,5 @@
   </component>
   <component name="DBNavigator.Project.StatementExecutionManager">
     <execution-variables />
-    <execution-variable-types />
   </component>
 </project>

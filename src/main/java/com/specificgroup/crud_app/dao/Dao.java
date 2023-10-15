@@ -10,6 +10,8 @@ import java.util.List;
 public interface Dao<T> {
     Long create(CreateRequest request);
     List<T> get(JdbcSpecification<T> jdbcSpecification);
-    Long update(UpdateRequest request);
+    Long update(UpdateRequest request, Long contactDetailsId);
     boolean delete(long id);
+
+    Long getContactDetailsIdByMainEntityId(Long id);
 }

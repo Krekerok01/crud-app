@@ -89,7 +89,8 @@ public class StudentService implements Service {
                     .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                     .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
-            result = validator.isEmpty() ? studentDao.update(updateRequest) : result;
+            Long contactDetailsId = getByStudentId(Long.parseLong(updateRequest.getId()));
+            result = validator.isEmpty() ? studentDao.update(updateRequest, contactDetailsId) : result;
         }
         return result;
     }
@@ -106,5 +107,11 @@ public class StudentService implements Service {
             }
         }
         return result;
+    }
+
+    private Long getByStudentId(Long id) {
+        Long contactDetailsId = studentDao.getContactDetailsIdByMainEntityId(id);
+        if (contactDetailsId == null) throw new RuntimeException("Not found contact detail id by student id");;
+        return contactDetailsId;
     }
 }

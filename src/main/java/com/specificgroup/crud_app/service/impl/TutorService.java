@@ -92,7 +92,8 @@ public class TutorService implements Service {
                     .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                     .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
-            result = validator.isEmpty() ? tutorDao.update(updateRequest) : result;
+            Long contactDetailsId = getByTutorId(Long.parseLong(updateRequest.getId()));
+            result = validator.isEmpty() ? tutorDao.update(updateRequest, contactDetailsId) : result;
         }
         return result;
     }
@@ -109,5 +110,11 @@ public class TutorService implements Service {
             }
         }
         return result;
+    }
+
+    private Long getByTutorId(Long id) {
+        Long contactDetailsId = tutorDao.getContactDetailsIdByMainEntityId(id);
+        if (contactDetailsId == null) throw new RuntimeException("Not found contact detail id by tutor id");;
+        return contactDetailsId;
     }
 }

@@ -20,8 +20,10 @@ import static com.specificgroup.crud_app.util.SqlCommand.Constant.INVALID_RESULT
 import static com.specificgroup.crud_app.util.SqlCommand.Delete.DELETE_BY_ID;
 import static com.specificgroup.crud_app.util.SqlCommand.Insert.*;
 import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT;
+import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_CONTACT_DETAIL_ID_BY_ENTITY_ID;
 import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_SETTING_TUTORS;
 import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_CONTACTS;
+import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_STUDENTS;
 import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_TUTORS;
 import static com.specificgroup.crud_app.util.SqlCommand.Update.*;
 
@@ -82,7 +84,7 @@ public class TutorDao implements Dao<Tutor> {
     }
 
     @Override
-    public Long update(UpdateRequest request) {
+    public Long update(UpdateRequest request, Long contactDetailsId) {
         long result = INVALID_RESULT;
         String tutorsSqlQuery = buildTutorsSqlQuery();
         String contactsSqlQuery = buildContactsSqlQuery();
@@ -96,7 +98,7 @@ public class TutorDao implements Dao<Tutor> {
         Object[] contactsParams = {
                 request.getPhone(),
                 request.getEmail(),
-                Long.parseLong(request.getId())
+                contactDetailsId
         };
 
         try (Connection connection = connectionPool.openConnection();
@@ -117,24 +119,6 @@ public class TutorDao implements Dao<Tutor> {
         return result;
     }
 
-    private String buildContactsSqlQuery() {
-        String sql = UPDATE.formatted(TABLE_CONTACTS);
-        StringBuilder sqlBuilder = new StringBuilder(sql);
-        sqlBuilder.append(UPDATE_PHONE).append(UPDATE_COMMA)
-                .append(UPDATE_EMAIL)
-                .append(UPDATE_WHERE_ID);
-        return sqlBuilder.toString();
-    }
-
-    private String buildTutorsSqlQuery() {
-        String sql = UPDATE.formatted(TABLE_TUTORS);
-        StringBuilder sqlBuilder = new StringBuilder(sql);
-        sqlBuilder.append(UPDATE_NAME).append(UPDATE_COMMA)
-                .append(UPDATE_SPECIALIZATION)
-                .append(UPDATE_WHERE_ID);
-        return sqlBuilder.toString();
-    }
-
     @Override
     public boolean delete(long id) {
         int result;
@@ -148,6 +132,41 @@ public class TutorDao implements Dao<Tutor> {
             throw new RuntimeException(e);
         }
         return result == 1;
+    }
+
+    @Override
+    public Long getContactDetailsIdByMainEntityId(Long id) {
+        String sqlQuery = SELECT_CONTACT_DETAIL_ID_BY_ENTITY_ID.formatted(TABLE_TUTORS);
+        Long contactDetailsId = null;
+        try (Connection connection = connectionPool.openConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                contactDetailsId = resultSet.getLong("contact_id");
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return contactDetailsId;
+    }
+
+    private String buildContactsSqlQuery() {
+        String sql = UPDATE.formatted(TABLE_CONTACTS);
+        StringBuilder sqlBuilder = new StringBuilder(sql);
+        sqlBuilder.append(UPDATE_PHONE).append(UPDATE_COMMA)
+            .append(UPDATE_EMAIL)
+            .append(UPDATE_WHERE_ID);
+        return sqlBuilder.toString();
+    }
+
+    private String buildTutorsSqlQuery() {
+        String sql = UPDATE.formatted(TABLE_TUTORS);
+        StringBuilder sqlBuilder = new StringBuilder(sql);
+        sqlBuilder.append(UPDATE_NAME).append(UPDATE_COMMA)
+            .append(UPDATE_SPECIALIZATION)
+            .append(UPDATE_WHERE_ID);
+        return sqlBuilder.toString();
     }
 
     public static class Builder {
