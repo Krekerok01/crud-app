@@ -4,8 +4,6 @@ package com.specificgroup.crud_app.controller;
 import com.specificgroup.crud_app.exception.EntityNotFoundException;
 import com.specificgroup.crud_app.exception.ValidationException;
 import com.sun.net.httpserver.HttpExchange;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
