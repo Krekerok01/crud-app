@@ -8,14 +8,14 @@ import com.specificgroup.crud_app.util.database.ConnectionPoolAbstract;
 import com.specificgroup.crud_app.util.database.JdbcSpecification;
 import com.specificgroup.crud_app.util.database.JdbcUtil;
 import com.specificgroup.crud_app.util.Mapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static com.specificgroup.crud_app.util.database.SqlCommand.Constant.INVALID_RESULT;
 import static com.specificgroup.crud_app.util.database.SqlCommand.Delete.DELETE_BY_ID;
@@ -28,7 +28,7 @@ import static com.specificgroup.crud_app.util.database.SqlCommand.Update.*;
 
 public class StudentDao implements Dao<Student> {
     private static ConnectionPool connectionPool;
-    private final Logger logger =  LogManager.getLogger();
+    private final Logger logger =  Logger.getLogger(StudentDao.class.getName());
 
     private StudentDao(final Builder builder) {
         if (connectionPool == null) {
@@ -63,7 +63,7 @@ public class StudentDao implements Dao<Student> {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Exception: " + e.getMessage());
+            logger.info("Exception: " + e.getMessage());
             throw new RuntimeException(e);
         }
         return result;
@@ -77,7 +77,7 @@ public class StudentDao implements Dao<Student> {
         try (Connection connection = connectionPool.openConnection()) {
             students.addAll(specification.searchFilter(connection, sql));
         } catch (SQLException e) {
-            logger.error("Getting students with attributes exception: " + e.getMessage());
+            logger.info("Getting students with attributes exception: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -96,7 +96,7 @@ public class StudentDao implements Dao<Student> {
                 students.add(Mapper.mapStudent(resultSet));
             }
         } catch (SQLException e) {
-            logger.error("Getting students exception: " + e.getMessage());
+            logger.info("Getting students exception: " + e.getMessage());
             throw new RuntimeException(e);
         }
         return students;
@@ -132,7 +132,7 @@ public class StudentDao implements Dao<Student> {
                 result = studentsPreparedStatement.executeUpdate() == 1 ? Long.parseLong(request.getId()) : result;
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
             throw new RuntimeException(e);
         }
         return result;
@@ -147,7 +147,7 @@ public class StudentDao implements Dao<Student> {
             preparedStatement.setLong(1, contactDetailsId);
             result = preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
             throw new RuntimeException(e);
         }
         return result == 1;
@@ -164,7 +164,7 @@ public class StudentDao implements Dao<Student> {
             if (resultSet.next())
                 contactDetailsId = resultSet.getLong("contact_id");
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
             throw new RuntimeException(e);
         }
         return contactDetailsId;

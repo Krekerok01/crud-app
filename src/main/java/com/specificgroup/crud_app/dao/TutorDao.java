@@ -8,14 +8,14 @@ import com.specificgroup.crud_app.util.database.ConnectionPool;
 import com.specificgroup.crud_app.util.database.ConnectionPoolAbstract;
 import com.specificgroup.crud_app.util.database.JdbcSpecification;
 import com.specificgroup.crud_app.util.database.JdbcUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.specificgroup.crud_app.util.database.SqlCommand.Constant.INVALID_RESULT;
 import static com.specificgroup.crud_app.util.database.SqlCommand.Delete.DELETE_BY_ID;
@@ -27,7 +27,7 @@ import static com.specificgroup.crud_app.util.database.SqlCommand.Update.*;
 
 public class TutorDao implements Dao<Tutor> {
     private static ConnectionPool connectionPool;
-    private final Logger logger =  LogManager.getLogger();
+    private final Logger logger =  Logger.getLogger(TutorDao.class.getName());
 
     private TutorDao(final Builder builder) {
         if (connectionPool == null) {
@@ -62,7 +62,7 @@ public class TutorDao implements Dao<Tutor> {
                 }
             }
         } catch (SQLException e) {
-            logger.error("Exception: " + e.getMessage());
+            logger.info("Exception: " + e.getMessage());
             throw new RuntimeException(e);
         }
         return result;
@@ -75,7 +75,7 @@ public class TutorDao implements Dao<Tutor> {
         try (Connection connection = connectionPool.openConnection()) {
             tutors.addAll(specification.searchFilter(connection, sql));
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
             throw new RuntimeException(e);
         }
         return tutors;
@@ -93,7 +93,7 @@ public class TutorDao implements Dao<Tutor> {
                 tutors.add(Mapper.mapTutor(resultSet));
             }
         } catch (SQLException e) {
-            logger.error("Getting tutors exception: " + e.getMessage());
+            logger.info("Getting tutors exception: " + e.getMessage());
             throw new RuntimeException(e);
         }
         return tutors;
@@ -129,7 +129,7 @@ public class TutorDao implements Dao<Tutor> {
                 result = tutorsPreparedStatement.executeUpdate() == 1 ? Long.parseLong(request.getId()) : result;
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
             throw new RuntimeException(e);
         }
         return result;
@@ -160,7 +160,7 @@ public class TutorDao implements Dao<Tutor> {
             if (resultSet.next())
                 contactDetailsId = resultSet.getLong("contact_id");
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
             throw new RuntimeException(e);
         }
         return contactDetailsId;

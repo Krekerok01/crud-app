@@ -1,27 +1,28 @@
 package com.specificgroup.crud_app.controller;
 
+import static com.specificgroup.crud_app.util.Attributes.AGE;
+import static com.specificgroup.crud_app.util.Attributes.EMAIL;
+import static com.specificgroup.crud_app.util.Attributes.ID;
+import static com.specificgroup.crud_app.util.Attributes.NAME;
+import static com.specificgroup.crud_app.util.Attributes.PHONE;
+import static com.specificgroup.crud_app.util.Attributes.SPECIALIZATION;
+
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
 import com.sun.net.httpserver.HttpExchange;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.specificgroup.crud_app.util.Attributes.*;
-
 
 class StudentController extends Controller {
 
     private final Service service;
-    private final Logger logger =  LogManager.getLogger();
 
     public StudentController(final Service service) {
         this.service = service;

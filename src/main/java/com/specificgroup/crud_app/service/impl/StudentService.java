@@ -11,12 +11,12 @@ import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
 import com.specificgroup.crud_app.util.database.StudentsSpecification;
 import com.specificgroup.crud_app.util.validation.Validator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static com.specificgroup.crud_app.util.Attributes.*;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.*;
@@ -24,7 +24,7 @@ import static com.specificgroup.crud_app.util.validation.ValidationConstants.*;
 public class StudentService implements Service {
 
     private final Dao<Student> studentDao;
-    private final Logger logger =  LogManager.getLogger();
+    private final Logger logger =  Logger.getLogger(StudentService.class.getName());
 
     public StudentService(Dao<Student> studentDao) {
         this.studentDao = studentDao;
@@ -32,7 +32,7 @@ public class StudentService implements Service {
 
     @Override
     public Long create(CreateRequest createRequest) {
-        logger.info("Creating a student:{}", createRequest);
+        logger.info("Creating a student.");
         long result = INVALID_RESULT;
         if (createRequest != null) {
             try {
@@ -79,7 +79,7 @@ public class StudentService implements Service {
 
     @Override
     public Long update(UpdateRequest updateRequest) {
-        logger.info("Updating student information:{}", updateRequest);
+        logger.info("Updating information for a student." + updateRequest.getId());
         long result = INVALID_RESULT;
         if (updateRequest != null) {
             Validator<UpdateRequest> validator = Validator.of(updateRequest)
@@ -99,7 +99,7 @@ public class StudentService implements Service {
 
     @Override
     public boolean deleteById(String id) {
-        logger.info("Deleting a student with id=:{}", id);
+        logger.info("Deleting a student with id=" + id);
         boolean result = false;
         if (id != null) {
             try {

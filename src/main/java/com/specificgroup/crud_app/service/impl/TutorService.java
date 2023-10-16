@@ -11,12 +11,12 @@ import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
 import com.specificgroup.crud_app.util.database.TutorSpecification;
 import com.specificgroup.crud_app.util.validation.Validator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static com.specificgroup.crud_app.util.Attributes.*;
 import static com.specificgroup.crud_app.util.Attributes.EMAIL;
@@ -25,7 +25,7 @@ import static com.specificgroup.crud_app.util.validation.ValidationConstants.*;
 public class TutorService implements Service {
 
     private final Dao<Tutor> tutorDao;
-    private final Logger logger =  LogManager.getLogger();
+    private final Logger logger =  Logger.getLogger(TutorService.class.getName());
 
     public TutorService(Dao<Tutor> tutorDao) {
         this.tutorDao = tutorDao;
@@ -33,7 +33,7 @@ public class TutorService implements Service {
 
     @Override
     public Long create(CreateRequest createRequest) {
-        logger.info("Creating a tutor:{}", createRequest);
+        logger.info("Creating a tutor.");
         long result = INVALID_RESULT;
         if (createRequest != null) {
             try {
@@ -79,7 +79,7 @@ public class TutorService implements Service {
 
     @Override
     public Long update(UpdateRequest updateRequest) {
-        logger.info("Updating tutor information:{}", updateRequest);
+        logger.info("Updating information for tutor with id=" + updateRequest.getId());
         long result = INVALID_RESULT;
         if (updateRequest != null) {
             Validator<UpdateRequest> validator = Validator.of(updateRequest)
@@ -99,7 +99,7 @@ public class TutorService implements Service {
 
     @Override
     public boolean deleteById(String id) {
-        logger.info("Deleting a tutor with id=:{}", id);
+        logger.info("Deleting a tutor with id=" + id);
         boolean result = false;
         if (id != null) {
             try {

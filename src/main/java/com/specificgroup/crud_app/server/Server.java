@@ -1,24 +1,21 @@
 package com.specificgroup.crud_app.server;
 
-
 import com.specificgroup.crud_app.controller.ApiHandler;
 import com.specificgroup.crud_app.util.database.ConnectionPool;
 import com.sun.net.httpserver.HttpServer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 
 public class Server {
 
     private HttpServer server;
     private final Map<String, ApiHandler> apiHandlers = new HashMap<>();
-    private final Logger logger =  LogManager.getLogger();
+    private final Logger logger =  Logger.getLogger(Server.class.getName());
 
     public Server(Map<String, ApiHandler> apiHandlers) {
         this.apiHandlers.putAll(apiHandlers);
