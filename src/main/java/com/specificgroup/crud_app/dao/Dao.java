@@ -11,7 +11,7 @@ public interface Dao<T> {
     Long create(CreateRequest request);
     List<T> get(JdbcSpecification<T> jdbcSpecification);
     Long update(UpdateRequest request, Long contactDetailsId);
-    boolean delete(long id);
+    boolean deleteByContactDetailId(Long contactDetailsId);
 
     Long getContactDetailsIdByMainEntityId(Long id);
 }

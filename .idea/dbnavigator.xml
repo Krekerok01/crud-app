@@ -29,7 +29,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="e612115f-14ef-4a7d-9492-a9374842cf80">
-      <console name="Connection" type="STANDARD" schema="information_schema" session="Main" />
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -37,8 +37,8 @@
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files>
-      <object connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" object-ref="schemas/public/tables/tutors" />
       <object connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" object-ref="schemas/public/tables/contacts" />
+      <object connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" object-ref="schemas/public/tables/tutors" />
       <object connection-id="e612115f-14ef-4a7d-9492-a9374842cf80" object-ref="schemas/public/tables/students" />
     </open-files>
   </component>
@@ -85,14 +85,16 @@
           <description value="" />
           <database-type value="POSTGRES" />
           <config-type value="BASIC" />
-          <database-version value="15.4" />
-          <driver-source value="BUILTIN" />
+          <database-version value="16.0" />
+          <driver-source value="BUNDLED" />
           <driver-library value="" />
           <driver value="" />
           <url-type value="DATABASE" />
           <host value="localhost" />
           <port value="5432" />
           <database value="crudappdb" />
+          <tns-folder value="" />
+          <tns-profile value="" />
           <type value="USER_PASSWORD" />
           <user value="postgres" />
           <deprecated-pwd value="cGFzc3dvcmQ=" />
@@ -132,6 +134,13 @@
           <max-connection-pool-size value="7" />
           <alternative-statement-delimiter value="" />
         </details>
+        <debugger>
+          <compile-dependencies value="true" />
+          <tcp-driver-tunneling value="false" />
+          <tcp-host-address value="" />
+          <tcp-port-from value="4000" />
+          <tcp-port-to value="4999" />
+        </debugger>
         <object-filters hide-empty-schemas="false" hide-pseudo-columns="false">
           <object-type-filter>
             <object-type name="SCHEMA" enabled="true" />
@@ -514,7 +523,6 @@
       </compiler>
       <debugger>
         <debugger-type value="ASK" />
-        <use-generic-runners value="true" />
       </debugger>
     </operation-settings>
     <ddl-file-settings>

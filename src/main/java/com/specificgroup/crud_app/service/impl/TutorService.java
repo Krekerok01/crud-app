@@ -4,11 +4,9 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dao.Dao;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
-import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
-import com.specificgroup.crud_app.util.StudentsSpecification;
 import com.specificgroup.crud_app.util.TutorSpecification;
 import com.specificgroup.crud_app.util.Validator;
 
@@ -92,7 +90,7 @@ public class TutorService implements Service {
                     .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                     .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
-            Long contactDetailsId = getByTutorId(Long.parseLong(updateRequest.getId()));
+            Long contactDetailsId = getContactDetailIdByTutorId(Long.parseLong(updateRequest.getId()));
             result = validator.isEmpty() ? tutorDao.update(updateRequest, contactDetailsId) : result;
         }
         return result;
@@ -104,7 +102,8 @@ public class TutorService implements Service {
         if (id != null) {
             try {
                 Validator<String> validatorId = Validator.of(id).validator(i -> i.matches(DIGIT), "Tutor id is not digit.");
-                result = validatorId.isEmpty() && tutorDao.delete(Long.parseLong(validatorId.get()));
+                Long tutorId = Long.parseLong(id);
+                result = validatorId.isEmpty() && tutorDao.deleteByContactDetailId(getContactDetailIdByTutorId(tutorId));
             } catch (NullPointerException e){
                 return false;
             }
@@ -112,7 +111,7 @@ public class TutorService implements Service {
         return result;
     }
 
-    private Long getByTutorId(Long id) {
+    private Long getContactDetailIdByTutorId(Long id) {
         Long contactDetailsId = tutorDao.getContactDetailsIdByMainEntityId(id);
         if (contactDetailsId == null) throw new RuntimeException("Not found contact detail id by tutor id");;
         return contactDetailsId;

@@ -89,7 +89,7 @@ public class StudentService implements Service {
                     .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                     .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
-            Long contactDetailsId = getByStudentId(Long.parseLong(updateRequest.getId()));
+            Long contactDetailsId = getContactDetailIdByStudentId(Long.parseLong(updateRequest.getId()));
             result = validator.isEmpty() ? studentDao.update(updateRequest, contactDetailsId) : result;
         }
         return result;
@@ -101,7 +101,8 @@ public class StudentService implements Service {
         if (id != null) {
             try {
                 Validator<String> validatorId = Validator.of(id).validator(i -> i.matches(DIGIT), "Student id is not digit.");
-                result = validatorId.isEmpty() && studentDao.delete(Long.parseLong(validatorId.get()));
+                Long studentId = Long.parseLong(validatorId.get());
+                result = validatorId.isEmpty() && studentDao.deleteByContactDetailId(getContactDetailIdByStudentId(studentId));
             } catch (NullPointerException e){
                 return false;
             }
@@ -109,7 +110,7 @@ public class StudentService implements Service {
         return result;
     }
 
-    private Long getByStudentId(Long id) {
+    private Long getContactDetailIdByStudentId(Long id) {
         Long contactDetailsId = studentDao.getContactDetailsIdByMainEntityId(id);
         if (contactDetailsId == null) throw new RuntimeException("Not found contact detail id by student id");;
         return contactDetailsId;

@@ -120,13 +120,12 @@ public class TutorDao implements Dao<Tutor> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean deleteByContactDetailId(Long contactDetailsId) {
         int result;
-        //delete contact
-        String delete = DELETE_BY_ID.formatted(TABLE_TUTORS);
+        String deleteSql = DELETE_BY_ID.formatted(TABLE_CONTACTS);
         try (Connection connection = connectionPool.openConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(delete)) {
-            preparedStatement.setLong(1, id);
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
+            preparedStatement.setLong(1, contactDetailsId);
             result = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
