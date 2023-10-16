@@ -5,6 +5,8 @@ import com.specificgroup.crud_app.dao.Dao;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.Tutor;
+import com.specificgroup.crud_app.exception.EntityNotFoundException;
+import com.specificgroup.crud_app.exception.ValidationException;
 import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
 import com.specificgroup.crud_app.util.database.TutorSpecification;
@@ -40,11 +42,11 @@ public class TutorService implements Service {
                         .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization is not a string")
                         .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                         .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
-                validator.getMessages()
-                        .forEach(System.out::println);
-                result = validator.isEmpty() ? tutorDao.create(createRequest) : result;
+                if (!validator.isEmpty()) throw new ValidationException();
+
+                result = tutorDao.create(createRequest);
             }catch (NullPointerException e) {
-                return result;
+                throw new ValidationException();
             }
         }
         return result;
@@ -88,7 +90,9 @@ public class TutorService implements Service {
                     .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
             Long contactDetailsId = getContactDetailIdByTutorId(Long.parseLong(updateRequest.getId()));
-            result = validator.isEmpty() ? tutorDao.update(updateRequest, contactDetailsId) : result;
+
+            if (!validator.isEmpty()) throw new ValidationException();
+            result = tutorDao.update(updateRequest, contactDetailsId);
         }
         return result;
     }
@@ -130,7 +134,7 @@ public class TutorService implements Service {
 
     private Long getContactDetailIdByTutorId(Long id) {
         Long contactDetailsId = tutorDao.getContactDetailsIdByMainEntityId(id);
-        if (contactDetailsId == null) throw new RuntimeException("Not found contact detail id by tutor id");
+        if (contactDetailsId == null) throw new EntityNotFoundException();
         return contactDetailsId;
     }
 }

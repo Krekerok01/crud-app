@@ -5,6 +5,8 @@ import com.specificgroup.crud_app.dao.Dao;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.Student;
+import com.specificgroup.crud_app.exception.EntityNotFoundException;
+import com.specificgroup.crud_app.exception.ValidationException;
 import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
 import com.specificgroup.crud_app.util.database.StudentsSpecification;
@@ -39,11 +41,12 @@ public class StudentService implements Service {
                         .validator(request -> request.getAge().matches(AGE_VALIDATION), "Age is not a digit")
                         .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                         .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
-                validator.getMessages()
-                        .forEach(System.out::println);
-                result = validator.isEmpty() ? studentDao.create(createRequest) : result;
+
+                if (!validator.isEmpty()) throw new ValidationException();
+
+                result = studentDao.create(createRequest);
             }catch (NullPointerException e) {
-                return result;
+                throw new ValidationException();
             }
         }
         return result;
@@ -87,7 +90,9 @@ public class StudentService implements Service {
                     .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
             Long contactDetailsId = getContactDetailIdByStudentId(Long.parseLong(updateRequest.getId()));
-            result = validator.isEmpty() ? studentDao.update(updateRequest, contactDetailsId) : result;
+
+            if (!validator.isEmpty()) throw new ValidationException();
+            result = studentDao.update(updateRequest, contactDetailsId);
         }
         return result;
     }
@@ -129,7 +134,7 @@ public class StudentService implements Service {
 
     private Long getContactDetailIdByStudentId(Long id) {
         Long contactDetailsId = studentDao.getContactDetailsIdByMainEntityId(id);
-        if (contactDetailsId == null) throw new RuntimeException("Not found contact detail id by student id");
+        if (contactDetailsId == null) throw new EntityNotFoundException();
         return contactDetailsId;
     }
 }
