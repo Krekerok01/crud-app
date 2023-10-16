@@ -4,13 +4,11 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dao.Dao;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
-import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
-import com.specificgroup.crud_app.util.StudentsSpecification;
-import com.specificgroup.crud_app.util.TutorSpecification;
-import com.specificgroup.crud_app.util.Validator;
+import com.specificgroup.crud_app.util.database.TutorSpecification;
+import com.specificgroup.crud_app.util.validation.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +18,7 @@ import java.util.Map;
 
 import static com.specificgroup.crud_app.util.Attributes.*;
 import static com.specificgroup.crud_app.util.Attributes.EMAIL;
-import static com.specificgroup.crud_app.util.ValidationConstants.*;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.*;
 
 public class TutorService implements Service {
 
@@ -132,7 +130,7 @@ public class TutorService implements Service {
 
     private Long getContactDetailIdByTutorId(Long id) {
         Long contactDetailsId = tutorDao.getContactDetailsIdByMainEntityId(id);
-        if (contactDetailsId == null) throw new RuntimeException("Not found contact detail id by tutor id");;
+        if (contactDetailsId == null) throw new RuntimeException("Not found contact detail id by tutor id");
         return contactDetailsId;
     }
 }

@@ -2,9 +2,12 @@ package com.specificgroup.crud_app.dao;
 
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
-import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.util.*;
+import com.specificgroup.crud_app.util.database.ConnectionPool;
+import com.specificgroup.crud_app.util.database.ConnectionPoolAbstract;
+import com.specificgroup.crud_app.util.database.JdbcSpecification;
+import com.specificgroup.crud_app.util.database.JdbcUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,15 +17,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.specificgroup.crud_app.util.SqlCommand.Constant.INVALID_RESULT;
-import static com.specificgroup.crud_app.util.SqlCommand.Delete.DELETE_BY_ID;
-import static com.specificgroup.crud_app.util.SqlCommand.Insert.*;
-import static com.specificgroup.crud_app.util.SqlCommand.Select.*;
-import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_SETTING_STUDENTS;
-import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_CONTACTS;
-import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_STUDENTS;
-import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_TUTORS;
-import static com.specificgroup.crud_app.util.SqlCommand.Update.*;
+import static com.specificgroup.crud_app.util.database.SqlCommand.Constant.INVALID_RESULT;
+import static com.specificgroup.crud_app.util.database.SqlCommand.Delete.DELETE_BY_ID;
+import static com.specificgroup.crud_app.util.database.SqlCommand.Insert.*;
+import static com.specificgroup.crud_app.util.database.SqlCommand.Select.*;
+import static com.specificgroup.crud_app.util.database.SqlCommand.Tables.TABLE_CONTACTS;
+import static com.specificgroup.crud_app.util.database.SqlCommand.Tables.TABLE_TUTORS;
+import static com.specificgroup.crud_app.util.database.SqlCommand.Update.*;
 
 public class TutorDao implements Dao<Tutor> {
     private static ConnectionPool connectionPool;

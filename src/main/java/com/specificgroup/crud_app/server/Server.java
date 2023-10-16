@@ -1,7 +1,8 @@
-package com.specificgroup.crud_app.controller;
+package com.specificgroup.crud_app.server;
 
 
-import com.specificgroup.crud_app.util.ConnectionPool;
+import com.specificgroup.crud_app.controller.ApiHandler;
+import com.specificgroup.crud_app.util.database.ConnectionPool;
 import com.sun.net.httpserver.HttpServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

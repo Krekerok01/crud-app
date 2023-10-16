@@ -1,4 +1,4 @@
-package com.specificgroup.crud_app.util;
+package com.specificgroup.crud_app.util.validation;
 
 public class ValidationConstants {
     public static final String DIGIT = "\\d+";

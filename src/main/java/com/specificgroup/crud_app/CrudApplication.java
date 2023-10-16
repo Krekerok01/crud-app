@@ -2,14 +2,14 @@ package com.specificgroup.crud_app;
 
 import com.specificgroup.crud_app.controller.ApiHandler;
 import com.specificgroup.crud_app.controller.ControllerFactory;
-import com.specificgroup.crud_app.controller.Server;
+import com.specificgroup.crud_app.server.Server;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import static com.specificgroup.crud_app.controller.HTTPConstants.UrlPath.STUDENT_PATH;
-import static com.specificgroup.crud_app.controller.HTTPConstants.UrlPath.TUTOR_PATH;
+import static com.specificgroup.crud_app.util.HTTPConstants.UrlPath.STUDENT_PATH;
+import static com.specificgroup.crud_app.util.HTTPConstants.UrlPath.TUTOR_PATH;
 
 
 public class CrudApplication {

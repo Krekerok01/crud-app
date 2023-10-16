@@ -5,7 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 
-import static com.specificgroup.crud_app.controller.HTTPConstants.HttpResponseStatus.STATUS_NOT_FOUND;
+import static com.specificgroup.crud_app.util.HTTPConstants.HttpResponseStatus.STATUS_NOT_FOUND;
 
 public record ApiHandler(Controller controller) {
 

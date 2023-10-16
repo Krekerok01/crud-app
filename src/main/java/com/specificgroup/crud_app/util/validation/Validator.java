@@ -1,4 +1,4 @@
-package com.specificgroup.crud_app.util;
+package com.specificgroup.crud_app.util.validation;
 
 import java.util.ArrayList;
 import java.util.List;

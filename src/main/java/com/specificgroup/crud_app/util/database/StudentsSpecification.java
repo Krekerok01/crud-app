@@ -1,7 +1,9 @@
-package com.specificgroup.crud_app.util;
+package com.specificgroup.crud_app.util.database;
 
 
 import com.specificgroup.crud_app.entity.Student;
+import com.specificgroup.crud_app.util.Attributes;
+import com.specificgroup.crud_app.util.Mapper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

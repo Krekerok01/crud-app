@@ -1,11 +1,13 @@
-package com.specificgroup.crud_app.util;
+package com.specificgroup.crud_app.util.database;
+
+import com.specificgroup.crud_app.util.Attributes;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Queue;
 
-import static com.specificgroup.crud_app.util.SqlCommand.Select.*;
+import static com.specificgroup.crud_app.util.database.SqlCommand.Select.*;
 
 
 public class JdbcUtil {

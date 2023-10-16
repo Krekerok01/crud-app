@@ -1,8 +1,10 @@
-package com.specificgroup.crud_app.util;
+package com.specificgroup.crud_app.util.database;
+
+import com.specificgroup.crud_app.util.PropertiesUtil;
 
 import java.util.Map;
 
-import static com.specificgroup.crud_app.util.ConnectionPoolFabric.PropertiesFile.*;
+import static com.specificgroup.crud_app.util.database.ConnectionPoolFabric.PropertiesFile.*;
 
 public class ConnectionPoolFabric {
 
