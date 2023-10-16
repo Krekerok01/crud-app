@@ -37,8 +37,6 @@ public class TutorController extends Controller {
                 .phone(jsonObject.getString(PHONE))
                 .email(jsonObject.getString(EMAIL))
                 .build();
-        logger.info("Creating a tutor:{}", createRequest);
-
         return service.create(createRequest);
     }
 

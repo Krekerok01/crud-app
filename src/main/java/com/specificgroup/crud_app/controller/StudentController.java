@@ -38,8 +38,6 @@ class StudentController extends Controller {
                 .email(jsonObject.getString(EMAIL))
                 .build();
 
-        logger.info("Creating a student:{}", createRequest);
-
         return service.create(createRequest);
     }
 

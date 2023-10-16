@@ -9,6 +9,8 @@ import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
 import com.specificgroup.crud_app.util.TutorSpecification;
 import com.specificgroup.crud_app.util.Validator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ import static com.specificgroup.crud_app.util.ValidationConstants.*;
 public class TutorService implements Service {
 
     private final Dao<Tutor> tutorDao;
+    private final Logger logger =  LogManager.getLogger();
 
     public TutorService(Dao<Tutor> tutorDao) {
         this.tutorDao = tutorDao;
@@ -28,6 +31,7 @@ public class TutorService implements Service {
 
     @Override
     public Long create(CreateRequest createRequest) {
+        logger.info("Creating a tutor:{}", createRequest);
         long result = INVALID_RESULT;
         if (createRequest != null) {
             try {
@@ -48,6 +52,7 @@ public class TutorService implements Service {
 
     @Override
     public List<JsonObject> get(Map<Attributes, String> attributes) {
+        logger.info("Getting a list of tutors.");
         boolean validation;
         List<Tutor> result = new ArrayList<>();
         List<JsonObject> jsonObjects = new ArrayList<>();
@@ -81,6 +86,7 @@ public class TutorService implements Service {
 
     @Override
     public Long update(UpdateRequest updateRequest) {
+        logger.info("Updating tutor information:{}", updateRequest);
         long result = INVALID_RESULT;
         if (updateRequest != null) {
             Validator<UpdateRequest> validator = Validator.of(updateRequest)
@@ -98,6 +104,7 @@ public class TutorService implements Service {
 
     @Override
     public boolean deleteById(String id) {
+        logger.info("Deleting a tutor with id=:{}", id);
         boolean result = false;
         if (id != null) {
             try {
