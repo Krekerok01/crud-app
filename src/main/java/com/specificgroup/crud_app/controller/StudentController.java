@@ -30,7 +30,7 @@ class StudentController extends Controller {
     @Override
     Long create(final HttpExchange httpExchange) {
         JsonObject jsonObject = readRequestFromJson(httpExchange);
-        CreateRequest createRequest = CreateRequest.builder()
+        CreateRequest createRequest = new CreateRequest.Builder()
                 .name(jsonObject.getString(NAME))
                 .age(jsonObject.getString(AGE))
                 .specialization(jsonObject.getString(SPECIALIZATION))
@@ -52,7 +52,7 @@ class StudentController extends Controller {
     @Override
     Long update(final HttpExchange httpExchange) {
         JsonObject jsonObject = readRequestFromJson(httpExchange);
-        UpdateRequest build = UpdateRequest.builder()
+        UpdateRequest build = new UpdateRequest.Builder()
                 .id(jsonObject.getString(ID))
                 .name(jsonObject.getString(NAME))
                 .age(jsonObject.getString(AGE))
