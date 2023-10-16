@@ -9,7 +9,8 @@ import java.util.List;
 
 public interface Dao<T> {
     Long create(CreateRequest request);
-    List<T> get(JdbcSpecification<T> jdbcSpecification);
+    List<T> getBySpecification(JdbcSpecification<T> jdbcSpecification);
+    List<T> get();
     Long update(UpdateRequest request, Long contactDetailsId);
     boolean deleteByContactDetailId(Long contactDetailsId);
 

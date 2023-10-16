@@ -52,26 +52,16 @@ public class StudentService implements Service {
     @Override
     public List<JsonObject> get(Map<Attributes, String> attributes) {
         logger.info("Getting a list of students.");
-        boolean validation;
         List<Student> result = new ArrayList<>();
         List<JsonObject> jsonObjects = new ArrayList<>();
-        if (attributes != null) {
-            Validator<Map<Attributes, String>> validator = Validator.of(attributes);
-            try {
-                attributes.forEach((k, v) -> {
-                    switch (k) {
-                        case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
-                        case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Incorrect name");
-                        case AGE -> validator.validator(var -> var.get(AGE).matches(AGE_VALIDATION), "Incorrect age");
-                    }
-                });
-                validation = validator.isEmpty();
-            }catch (NullPointerException e) {
-                validation = false;
-            }
-            result = validation ? studentDao.get(new StudentsSpecification(attributes)) : result;
+
+        if (attributes != null && !attributes.isEmpty()) {
+            result = getStudentsByAttributes(result, attributes);
+        } else {
+            result = studentDao.get();
         }
-        for (Student student : result) {
+
+        result.forEach(student -> {
             JsonObject json = new JsonObject();
             json.put(ID, student.getId());
             json.put(NAME, student.getName());
@@ -79,7 +69,8 @@ public class StudentService implements Service {
             json.put(PHONE, student.getContactDetails().getPhone());
             json.put(EMAIL, student.getContactDetails().getEmail());
             jsonObjects.add(json);
-        }
+        });
+
         return jsonObjects;
     }
 
@@ -114,6 +105,25 @@ public class StudentService implements Service {
                 return false;
             }
         }
+        return result;
+    }
+
+    private List<Student> getStudentsByAttributes(List<Student> result, Map<Attributes, String> attributes) {
+        Validator<Map<Attributes, String>> validator = Validator.of(attributes);
+        boolean validation;
+        try {
+            attributes.forEach((k, v) -> {
+                switch (k) {
+                    case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
+                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Incorrect name");
+                    case AGE -> validator.validator(var -> var.get(AGE).matches(AGE_VALIDATION), "Incorrect age");
+                }
+            });
+            validation = validator.isEmpty();
+        }catch (NullPointerException e) {
+            validation = false;
+        }
+        result = validation ? studentDao.getBySpecification(new StudentsSpecification(attributes)) : result;
         return result;
     }
 

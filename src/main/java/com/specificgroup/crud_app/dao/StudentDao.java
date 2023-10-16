@@ -20,10 +20,7 @@ import java.util.Map;
 import static com.specificgroup.crud_app.util.SqlCommand.Constant.INVALID_RESULT;
 import static com.specificgroup.crud_app.util.SqlCommand.Delete.DELETE_BY_ID;
 import static com.specificgroup.crud_app.util.SqlCommand.Insert.*;
-import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT;
-import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_CONTACT_DETAIL_ID_BY_ENTITY_ID;
-import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_ID;
-import static com.specificgroup.crud_app.util.SqlCommand.Select.SELECT_SETTING_STUDENTS;
+import static com.specificgroup.crud_app.util.SqlCommand.Select.*;
 import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_CONTACTS;
 import static com.specificgroup.crud_app.util.SqlCommand.Tables.TABLE_STUDENTS;
 import static com.specificgroup.crud_app.util.SqlCommand.Update.*;
@@ -73,16 +70,35 @@ public class StudentDao implements Dao<Student> {
     }
 
     @Override
-    public List<Student> get(JdbcSpecification<Student> specification) {
+    public List<Student> getBySpecification(JdbcSpecification<Student> specification) {
         String sql = SELECT.formatted(SELECT_SETTING_STUDENTS, TABLE_STUDENTS);
         List<Student> students = new ArrayList<>();
+
         try (Connection connection = connectionPool.openConnection()) {
             students.addAll(specification.searchFilter(connection, sql));
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.error("Getting students with attributes exception: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
+        return students;
+    }
+
+    @Override
+    public List<Student> get() {
+        String sql = SELECT_WITHOUT_ATTRIBUTES.formatted(SELECT_SETTING_STUDENTS, TABLE_STUDENTS);
+        List<Student> students = new ArrayList<>();
+
+        try (Connection connection = connectionPool.openConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                students.add(Mapper.mapStudent(resultSet));
+            }
+        } catch (SQLException e) {
+            logger.error("Getting students exception: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
         return students;
     }
 

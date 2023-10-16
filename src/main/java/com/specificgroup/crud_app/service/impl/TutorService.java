@@ -4,9 +4,11 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dao.Dao;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
+import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
+import com.specificgroup.crud_app.util.StudentsSpecification;
 import com.specificgroup.crud_app.util.TutorSpecification;
 import com.specificgroup.crud_app.util.Validator;
 import org.apache.logging.log4j.LogManager;
@@ -53,26 +55,16 @@ public class TutorService implements Service {
     @Override
     public List<JsonObject> get(Map<Attributes, String> attributes) {
         logger.info("Getting a list of tutors.");
-        boolean validation;
         List<Tutor> result = new ArrayList<>();
         List<JsonObject> jsonObjects = new ArrayList<>();
-        if (attributes != null) {
-            Validator<Map<Attributes, String>> validator = Validator.of(attributes);
-            try {
-                attributes.forEach((k, v) -> {
-                    switch (k) {
-                        case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
-                        case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Incorrect name");
-                        case SPECIALIZATION -> validator.validator(var -> var.get(SPECIALIZATION).matches(SPECIALIZATION_VALIDATION), "Incorrect specialization");
-                    }
-                });
-                validation = validator.isEmpty();
-            }catch (NullPointerException e) {
-                validation = false;
-            }
-            result = validation ? tutorDao.get(new TutorSpecification(attributes)) : result;
+
+        if (attributes != null && !attributes.isEmpty()) {
+            result = getTutorsByAttributes(result, attributes);
+        } else {
+            result = tutorDao.get();
         }
-        for (Tutor tutor: result) {
+
+        result.forEach(tutor -> {
             JsonObject json = new JsonObject();
             json.put(ID, tutor.getId());
             json.put(NAME, tutor.getName());
@@ -80,7 +72,8 @@ public class TutorService implements Service {
             json.put(PHONE, tutor.getContactDetails().getPhone());
             json.put(EMAIL, tutor.getContactDetails().getEmail());
             jsonObjects.add(json);
-        }
+        });
+
         return jsonObjects;
     }
 
@@ -115,6 +108,25 @@ public class TutorService implements Service {
                 return false;
             }
         }
+        return result;
+    }
+
+    private List<Tutor> getTutorsByAttributes(List<Tutor> result, Map<Attributes, String> attributes) {
+        Validator<Map<Attributes, String>> validator = Validator.of(attributes);
+        boolean validation;
+        try {
+            attributes.forEach((k, v) -> {
+                switch (k) {
+                    case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
+                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Incorrect name");
+                    case SPECIALIZATION -> validator.validator(var -> var.get(SPECIALIZATION).matches(SPECIALIZATION_VALIDATION), "Incorrect specialization");
+                }
+            });
+            validation = validator.isEmpty();
+        }catch (NullPointerException e) {
+            validation = false;
+        }
+        result = validation ? tutorDao.getBySpecification(new TutorSpecification(attributes)) : result;
         return result;
     }
 
