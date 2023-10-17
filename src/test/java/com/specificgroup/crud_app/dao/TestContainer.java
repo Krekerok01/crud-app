@@ -97,10 +97,10 @@ public class TestContainer extends PostgreSQLContainer<TestContainer> {
                              
             INSERT INTO students(name, age, contact_id)
             VALUES ('Kate', 20, 1),
-                   ('Nikita', 21, 2)
+                   ('Nikita', 21, 2);
                         
             INSERT INTO tutors(name, specialization, contact_id)
             VALUES ('Vlad', 'QA', 3),
-                   ('Ira', 'Developer', 4)
+                   ('Ira', 'Developer', 4);
                        """;
 }

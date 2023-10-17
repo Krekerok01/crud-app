@@ -10,10 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.specificgroup.crud_app.dao.specification.StudentsSpecification;
+import com.specificgroup.crud_app.dao.specification.TutorSpecification;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.ContactDetails;
 import com.specificgroup.crud_app.entity.Student;
+import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.util.Attributes;
 import java.util.HashMap;
 import java.util.List;
@@ -33,11 +35,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class StudentDaoTest {
+public class TutorDaoTest {
 
     @Container
     private static final PostgreSQLContainer<TestContainer> postgreSQLContainer = TestContainer.getContainer();
-    private static Dao<Student> studentDao;
+    private static Dao<Tutor> tutorDao;
 
     @BeforeAll
     @DisplayName("Create db")
@@ -48,7 +50,7 @@ public class StudentDaoTest {
         attributes.put(USERNAME_KEY, postgreSQLContainer.getUsername());
         attributes.put(URL_KEY, postgreSQLContainer.getJdbcUrl());
         attributes.put(POOL_SIZE, "5");
-        studentDao = new StudentDao.Builder().type(FLEXIBLE).property(attributes).build();
+        tutorDao = new TutorDao.Builder().type(FLEXIBLE).property(attributes).build();
     }
 
     @AfterAll
@@ -58,15 +60,15 @@ public class StudentDaoTest {
 
     @Order(4)
     @Test
-    void createNewStudentTest() {
+    void createNewTutorTest() {
         CreateRequest createRequest = new CreateRequest.Builder()
             .name("Varvara")
-            .age("22")
+            .specialization("Developer")
             .phone("+375777777777")
             .email("test@gmail.com")
             .build();
 
-        Long result = studentDao.create(createRequest);
+        Long result = tutorDao.create(createRequest);
 
         assertNotNull(result);
         assertEquals(3L, result);
@@ -75,10 +77,10 @@ public class StudentDaoTest {
     @Order(1)
     @Test
     void getBySpecificationTest_IdAttribute() {
-        List<Student> expected = List.of(buildKate());
+        List<Tutor> expected = List.of(buildVlad());
         Map<Attributes, String> attributes = new HashMap<>();
         attributes.put(Attributes.ID, "1");
-        List<Student> result = studentDao.getBySpecification(new StudentsSpecification(attributes));
+        List<Tutor> result = tutorDao.getBySpecification(new TutorSpecification(attributes));
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -88,10 +90,10 @@ public class StudentDaoTest {
     @Order(2)
     @Test
     void getBySpecificationTest_NameAttribute() {
-        List<Student> expected = List.of(buildNikita());
+        List<Tutor> expected = List.of(buildIra());
         Map<Attributes, String> attributes = new HashMap<>();
-        attributes.put(Attributes.NAME, "Nikita");
-        List<Student> result = studentDao.getBySpecification(new StudentsSpecification(attributes));
+        attributes.put(Attributes.NAME, "Ira");
+        List<Tutor> result = tutorDao.getBySpecification(new TutorSpecification(attributes));
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -101,9 +103,9 @@ public class StudentDaoTest {
     @Order(3)
     @Test
     void getTest_WithoutAttributes() {
-        List<Student> expected = List.of(buildKate(), buildNikita());
+        List<Tutor> expected = List.of(buildVlad(), buildIra());
 
-        List<Student> result = studentDao.get();
+        List<Tutor> result = tutorDao.get();
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -111,34 +113,34 @@ public class StudentDaoTest {
     }
 
     @Test
-    void updateStudentTest_SuccessfulRequest() {
+    void updateTutorTest_SuccessfulRequest() {
         Long expected = 1L;
         UpdateRequest updateRequest = new UpdateRequest.Builder()
             .id(String.valueOf(expected))
-            .name("Kate")
-            .age("21")
-            .phone("+375888888888")
-            .email("new.test1@gmail.com")
+            .name("NeVlad")
+            .specialization("QA")
+            .phone("+375000000000")
+            .email("nevlad.test3@gmail.com")
             .build();
 
-        Long result = studentDao.update(updateRequest, 1L);
+        Long result = tutorDao.update(updateRequest, 3L);
 
         assertNotNull(result);
         assertEquals(expected, result);
     }
 
     @Test
-    void updateStudentTest_UnsuccessfulRequest() {
+    void updateTutorTest_UnsuccessfulRequest() {
         Long expected = -1L;
         UpdateRequest updateRequest = new UpdateRequest.Builder()
             .id("20")
-            .name("Kate")
-            .age("21")
-            .phone("+375888888888")
-            .email("new.test1@gmail.com")
+            .name("NeVlad")
+            .specialization("QA")
+            .phone("+375000000000")
+            .email("nevlad.test3@gmail.com")
             .build();
 
-        Long result = studentDao.update(updateRequest, 1L);
+        Long result = tutorDao.update(updateRequest, 3L);
 
         assertNotNull(result);
         assertEquals(expected, result);
@@ -146,26 +148,27 @@ public class StudentDaoTest {
 
     @Test
     void getContactDetailsIdByMainEntityIdTest(){
-        Long expected = 2L;
+        Long expected = 4L;
 
-        Long result = studentDao.getContactDetailsIdByMainEntityId(2L);
+        Long result = tutorDao.getContactDetailsIdByMainEntityId(2L);
 
         assertNotNull(result);
         assertEquals(expected, result);
     }
 
     @Test
-    void deleteStudentByContactDetailIdTest() {
-        assertTrue(studentDao.deleteByContactDetailId(3L));
+    void deleteTutorByContactDetailIdTest() {
+        assertTrue(tutorDao.deleteByContactDetailId(3L));
     }
 
-    private Student buildKate(){
-        return new Student(1L, "Kate", 20,
-            new ContactDetails(1L, "+375111111111", "test1@gmail.com"));
+    private Tutor buildVlad(){
+        return new Tutor(1L, "Vlad", "QA",
+            new ContactDetails(3L, "+375333333333", "test3@gmail.com"));
     }
 
-    private Student buildNikita(){
-        return new Student(2L, "Nikita", 21,
-            new ContactDetails(2L, "+375222222222", "test2@gmail.com"));
+    private Tutor buildIra(){
+        return new Tutor(2L, "Ira", "Developer",
+            new ContactDetails(4L, "+375444444444", "test4@gmail.com"));
     }
+
 }
