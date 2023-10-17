@@ -51,14 +51,6 @@ public abstract class Controller {
                     response(httpExchange, STATUS_NOT_FOUND, -1);
                 }
             }
-            case DELETE -> {
-                if (requestType.matches(DELETE_REQUEST)) {
-                    statusCode = delete(httpExchange) ? STATUS_NO_CONTENT : STATUS_NOT_FOUND;
-                } else {
-                    statusCode = STATUS_NOT_FOUND;
-                }
-                response(httpExchange, statusCode, -1);
-            }
             case POST -> {
                 JsonObject jsonObject = new JsonObject();
                 long id;
@@ -68,14 +60,30 @@ public abstract class Controller {
                     jsonObject.put(Attributes.ID,id);
                     status = id < 0 ? STATUS_NOT_FOUND : STATUS_CREATED;
                     writeResponse(httpExchange,List.of(jsonObject),status);
-                } else if (requestType.matches(UPDATE_REQUEST)) {
+                } else {
+                    notSupportRequest(httpExchange, requestType, "Request type {} does noy support");
+                }
+            }
+            case PUT -> {
+                JsonObject jsonObject = new JsonObject();
+                long id;
+                int status;
+                if (requestType.matches(UPDATE_REQUEST)) {
                     id = update(httpExchange);
                     jsonObject.put(Attributes.ID,id);
-                    status = id < 0 ? STATUS_NOT_FOUND : STATUS_CREATED;
+                    status = id < 0 ? STATUS_NOT_FOUND : STATUS_OK;
                     writeResponse(httpExchange,List.of(jsonObject),status);
                 } else {
                     notSupportRequest(httpExchange, requestType, "Request type {} does noy support");
                 }
+            }
+            case DELETE -> {
+                if (requestType.matches(DELETE_REQUEST)) {
+                    statusCode = delete(httpExchange) ? STATUS_NO_CONTENT : STATUS_NOT_FOUND;
+                } else {
+                    statusCode = STATUS_NOT_FOUND;
+                }
+                response(httpExchange, statusCode, -1);
             }
             default -> notSupportRequest(httpExchange, requestMethod, "Method {} does not support");
         }
