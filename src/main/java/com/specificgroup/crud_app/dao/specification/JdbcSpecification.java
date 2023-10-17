@@ -1,4 +1,4 @@
-package com.specificgroup.crud_app.util.database;
+package com.specificgroup.crud_app.dao.specification;
 
 import java.sql.Connection;
 import java.sql.SQLException;

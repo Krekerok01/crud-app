@@ -1,7 +1,7 @@
 package com.specificgroup.crud_app.server;
 
 import com.specificgroup.crud_app.controller.ApiHandler;
-import com.specificgroup.crud_app.util.database.ConnectionPool;
+import com.specificgroup.crud_app.util.database.connection.ConnectionPool;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;

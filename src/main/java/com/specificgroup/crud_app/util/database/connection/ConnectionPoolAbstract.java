@@ -1,4 +1,4 @@
-package com.specificgroup.crud_app.util.database;
+package com.specificgroup.crud_app.util.database.connection;
 
 import java.util.Map;
 
@@ -25,5 +25,4 @@ public class ConnectionPoolAbstract {
         }
         return result;
     }
-
 }

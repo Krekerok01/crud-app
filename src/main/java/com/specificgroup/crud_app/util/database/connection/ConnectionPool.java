@@ -1,4 +1,4 @@
-package com.specificgroup.crud_app.util.database;
+package com.specificgroup.crud_app.util.database.connection;
 
 import org.postgresql.ds.PGSimpleDataSource;
 

@@ -5,7 +5,7 @@ import com.specificgroup.crud_app.dao.TutorDao;
 import com.specificgroup.crud_app.service.impl.StudentService;
 import com.specificgroup.crud_app.service.impl.TutorService;
 
-import static com.specificgroup.crud_app.util.database.ConnectionPoolAbstract.Type.DEFAULT;
+import static com.specificgroup.crud_app.util.database.connection.ConnectionPoolAbstract.Type.DEFAULT;
 
 public class ControllerFactory {
 

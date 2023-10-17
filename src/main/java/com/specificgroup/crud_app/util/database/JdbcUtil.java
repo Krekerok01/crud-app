@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.Queue;
 
-import static com.specificgroup.crud_app.util.database.SqlCommand.Select.*;
+import static com.specificgroup.crud_app.util.Constants.Select.*;
 
 
 public class JdbcUtil {

@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import static com.specificgroup.crud_app.util.HTTPConstants.UrlPath.STUDENT_PATH;
-import static com.specificgroup.crud_app.util.HTTPConstants.UrlPath.TUTOR_PATH;
+import static com.specificgroup.crud_app.util.Constants.UrlPath.STUDENT_PATH;
+import static com.specificgroup.crud_app.util.Constants.UrlPath.TUTOR_PATH;
 
 
 public class CrudApplication {

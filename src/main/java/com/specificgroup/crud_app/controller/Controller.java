@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.specificgroup.crud_app.util.HTTPConstants.HttpMethod.*;
-import static com.specificgroup.crud_app.util.HTTPConstants.HttpResponseStatus.*;
+import static com.specificgroup.crud_app.util.Constants.HttpMethod.*;
+import static com.specificgroup.crud_app.util.Constants.HttpResponseStatus.*;
 
 public abstract class Controller {
 

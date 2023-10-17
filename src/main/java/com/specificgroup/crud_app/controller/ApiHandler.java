@@ -7,8 +7,8 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 
-import static com.specificgroup.crud_app.util.HTTPConstants.HttpResponseStatus.STATUS_BAD_REQUEST;
-import static com.specificgroup.crud_app.util.HTTPConstants.HttpResponseStatus.STATUS_NOT_FOUND;
+import static com.specificgroup.crud_app.util.Constants.HttpResponseStatus.STATUS_BAD_REQUEST;
+import static com.specificgroup.crud_app.util.Constants.HttpResponseStatus.STATUS_NOT_FOUND;
 
 public record ApiHandler(Controller controller) {
 

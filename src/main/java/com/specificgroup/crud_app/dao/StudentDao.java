@@ -3,9 +3,9 @@ package com.specificgroup.crud_app.dao;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.Student;
-import com.specificgroup.crud_app.util.database.ConnectionPool;
-import com.specificgroup.crud_app.util.database.ConnectionPoolAbstract;
-import com.specificgroup.crud_app.util.database.JdbcSpecification;
+import com.specificgroup.crud_app.util.database.connection.ConnectionPool;
+import com.specificgroup.crud_app.util.database.connection.ConnectionPoolAbstract;
+import com.specificgroup.crud_app.dao.specification.JdbcSpecification;
 import com.specificgroup.crud_app.util.database.JdbcUtil;
 import com.specificgroup.crud_app.util.Mapper;
 
@@ -17,13 +17,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static com.specificgroup.crud_app.util.database.SqlCommand.Constant.INVALID_RESULT;
-import static com.specificgroup.crud_app.util.database.SqlCommand.Delete.DELETE_BY_ID;
-import static com.specificgroup.crud_app.util.database.SqlCommand.Insert.*;
-import static com.specificgroup.crud_app.util.database.SqlCommand.Select.*;
-import static com.specificgroup.crud_app.util.database.SqlCommand.Tables.TABLE_CONTACTS;
-import static com.specificgroup.crud_app.util.database.SqlCommand.Tables.TABLE_STUDENTS;
-import static com.specificgroup.crud_app.util.database.SqlCommand.Update.*;
+import static com.specificgroup.crud_app.util.Constants.Constant.INVALID_RESULT;
+import static com.specificgroup.crud_app.util.Constants.Delete.DELETE_BY_ID;
+import static com.specificgroup.crud_app.util.Constants.Insert.*;
+import static com.specificgroup.crud_app.util.Constants.Select.*;
+import static com.specificgroup.crud_app.util.Constants.Tables.TABLE_CONTACTS;
+import static com.specificgroup.crud_app.util.Constants.Tables.TABLE_STUDENTS;
+import static com.specificgroup.crud_app.util.Constants.Update.*;
 
 
 public class StudentDao implements Dao<Student> {

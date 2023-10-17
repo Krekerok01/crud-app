@@ -3,7 +3,7 @@ package com.specificgroup.crud_app.dao;
 
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
-import com.specificgroup.crud_app.util.database.JdbcSpecification;
+import com.specificgroup.crud_app.dao.specification.JdbcSpecification;
 
 import java.util.List;
 
