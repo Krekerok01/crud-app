@@ -89,9 +89,9 @@ public class TutorService implements Service {
                     .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                     .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
-            Long contactDetailsId = getContactDetailIdByTutorId(Long.parseLong(updateRequest.getId()));
-
             if (!validator.isEmpty()) throw new ValidationException();
+
+            Long contactDetailsId = getContactDetailIdByTutorId(Long.parseLong(updateRequest.getId()));
             result = tutorDao.update(updateRequest, contactDetailsId);
         }
         return result;
