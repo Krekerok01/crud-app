@@ -2,6 +2,7 @@ package com.specificgroup.crud_app.util.database;
 
 import com.specificgroup.crud_app.util.Attributes;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
@@ -48,5 +49,28 @@ public class JdbcUtil {
             }
         }
         sqlBuilder.delete(sqlBuilder.length() - SELECT_AND.length(), sqlBuilder.length());
+    }
+
+    public static void rollback(Connection connection, SQLException e) {
+        if (connection != null) {
+            try {
+                connection.rollback();
+            } catch (final SQLException ex) {
+                System.out.println(("Database error: " + e.getMessage()));
+            }
+
+            throw new RuntimeException("Database error", e);
+        }
+    }
+
+    public static void close(Connection connection) {
+        if (connection != null) {
+            try {
+                connection.setAutoCommit(true);
+                connection.close();
+            } catch (final SQLException e) {
+                throw new RuntimeException("Database connection error.");
+            }
+        }
     }
 }

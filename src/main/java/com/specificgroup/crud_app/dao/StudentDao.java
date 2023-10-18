@@ -41,10 +41,12 @@ public class StudentDao implements Dao<Student> {
         long result = INVALID_RESULT;
         String studentQuery = INSERT_COMMON_ENTITY.formatted(TABLE_STUDENTS, INSERT_SETTING_STUDENTS);
 
-        try (Connection connection = connectionPool.openConnection();
-             PreparedStatement studentStatement = connection.prepareStatement(studentQuery, Statement.RETURN_GENERATED_KEYS);
+        Connection connection = connectionPool.openConnection();
+
+        try (PreparedStatement studentStatement = connection.prepareStatement(studentQuery, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement contactStatement = connection.prepareStatement(INSERT_CONTACTS_DETAIL, Statement.RETURN_GENERATED_KEYS)) {
-            
+            connection.setAutoCommit(false);
+
             Object[] contactInfo = {request.getPhone(), request.getEmail()};
             JdbcUtil.setStatement(contactStatement, contactInfo);
             contactStatement.execute();
@@ -62,9 +64,13 @@ public class StudentDao implements Dao<Student> {
                     }
                 }
             }
+            connection.commit();
         } catch (SQLException e) {
             logger.info("Exception: " + e.getMessage());
+            JdbcUtil.rollback(connection, e);
             throw new RuntimeException(e);
+        } finally {
+            JdbcUtil.close(connection);
         }
         return result;
     }
@@ -120,9 +126,11 @@ public class StudentDao implements Dao<Student> {
                 contactDetailsId
         };
 
-        try (Connection connection = connectionPool.openConnection();
-             PreparedStatement studentsPreparedStatement = connection.prepareStatement(studentsSqlQuery);
+        Connection connection = connectionPool.openConnection();
+
+        try (PreparedStatement studentsPreparedStatement = connection.prepareStatement(studentsSqlQuery);
              PreparedStatement contactsPreparedStatement = connection.prepareStatement(contactsSqlQuery)) {
+            connection.setAutoCommit(false);
 
             JdbcUtil.setStatement(contactsPreparedStatement, contactsParams);
             int contactsUpdateResult = contactsPreparedStatement.executeUpdate();
@@ -131,9 +139,13 @@ public class StudentDao implements Dao<Student> {
                 JdbcUtil.setStatement(studentsPreparedStatement, studentsParams);
                 result = studentsPreparedStatement.executeUpdate() == 1 ? Long.parseLong(request.getId()) : result;
             }
+            connection.commit();
         } catch (SQLException e) {
             logger.info(e.getMessage());
+            JdbcUtil.rollback(connection, e);
             throw new RuntimeException(e);
+        } finally {
+            JdbcUtil.close(connection);
         }
         return result;
     }

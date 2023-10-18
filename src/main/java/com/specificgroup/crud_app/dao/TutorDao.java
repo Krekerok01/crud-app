@@ -39,9 +39,11 @@ public class TutorDao implements Dao<Tutor> {
         long result = INVALID_RESULT;
         String tutorQuery = INSERT_COMMON_ENTITY.formatted(TABLE_TUTORS, INSERT_SETTING_TUTORS);
 
-        try (Connection connection = connectionPool.openConnection();
-             PreparedStatement tutorStatement = connection.prepareStatement(tutorQuery, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement contactStatement = connection.prepareStatement(INSERT_CONTACTS_DETAIL, Statement.RETURN_GENERATED_KEYS)) {
+        Connection connection = connectionPool.openConnection();
+
+        try (PreparedStatement tutorStatement = connection.prepareStatement(tutorQuery, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement contactStatement = connection.prepareStatement(INSERT_CONTACTS_DETAIL, Statement.RETURN_GENERATED_KEYS);){
+            connection.setAutoCommit(false);
 
             Object[] contactInfo = {request.getPhone(), request.getEmail()};
             JdbcUtil.setStatement(contactStatement, contactInfo);
@@ -60,9 +62,13 @@ public class TutorDao implements Dao<Tutor> {
                     }
                 }
             }
+            connection.commit();
         } catch (SQLException e) {
             logger.info("Exception: " + e.getMessage());
+            JdbcUtil.rollback(connection, e);
             throw new RuntimeException(e);
+        } finally {
+            JdbcUtil.close(connection);
         }
         return result;
     }
@@ -116,9 +122,11 @@ public class TutorDao implements Dao<Tutor> {
                 contactDetailsId
         };
 
-        try (Connection connection = connectionPool.openConnection();
-             PreparedStatement tutorsPreparedStatement = connection.prepareStatement(tutorsSqlQuery);
+        Connection connection = connectionPool.openConnection();
+
+        try (PreparedStatement tutorsPreparedStatement = connection.prepareStatement(tutorsSqlQuery);
              PreparedStatement contactsPreparedStatement = connection.prepareStatement(contactsSqlQuery)) {
+            connection.setAutoCommit(false);
 
             JdbcUtil.setStatement(contactsPreparedStatement, contactsParams);
             int contactsUpdateResult = contactsPreparedStatement.executeUpdate();
@@ -127,9 +135,13 @@ public class TutorDao implements Dao<Tutor> {
                 JdbcUtil.setStatement(tutorsPreparedStatement, tutorsParams);
                 result = tutorsPreparedStatement.executeUpdate() == 1 ? Long.parseLong(request.getId()) : result;
             }
+            connection.commit();
         } catch (SQLException e) {
             logger.info(e.getMessage());
+            JdbcUtil.rollback(connection, e);
             throw new RuntimeException(e);
+        } finally {
+            JdbcUtil.close(connection);
         }
         return result;
     }
