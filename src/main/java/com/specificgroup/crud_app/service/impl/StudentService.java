@@ -11,11 +11,10 @@ import com.specificgroup.crud_app.service.Service;
 import com.specificgroup.crud_app.util.Attributes;
 import com.specificgroup.crud_app.dao.specification.StudentsSpecification;
 import com.specificgroup.crud_app.util.validation.Validator;
+import com.sun.source.tree.BinaryTree;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static com.specificgroup.crud_app.util.Attributes.*;
@@ -122,6 +121,8 @@ public class StudentService implements Service {
                     case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
                     case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Incorrect name");
                     case AGE -> validator.validator(var -> var.get(AGE).matches(AGE_VALIDATION), "Incorrect age");
+                    case PHONE -> validator.validator(var -> var.get(PHONE).matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+                    case EMAIL -> validator.validator(var -> var.get(EMAIL).matches(EMAIL_VALIDATION), "Valid email is required.");
                 }
             });
             validation = validator.isEmpty();

@@ -122,6 +122,8 @@ public class TutorService implements Service {
                     case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
                     case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Incorrect name");
                     case SPECIALIZATION -> validator.validator(var -> var.get(SPECIALIZATION).matches(SPECIALIZATION_VALIDATION), "Incorrect specialization");
+                    case PHONE -> validator.validator(var -> var.get(PHONE).matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+                    case EMAIL -> validator.validator(var -> var.get(EMAIL).matches(EMAIL_VALIDATION), "Valid email is required.");
                 }
             });
             validation = validator.isEmpty();

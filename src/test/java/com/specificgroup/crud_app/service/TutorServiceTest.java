@@ -128,11 +128,15 @@ public class TutorServiceTest {
         Map<Attributes, String> wrongId = Map.of(ID, "A");
         Map<Attributes, String> wrongName = Map.of(NAME,"123658");
         Map<Attributes, String> wrongSpecialization = Map.of(SPECIALIZATION,"1");
+        Map<Attributes, String> wrongPhone = Map.of(PHONE,"375(99)9999999");
+        Map<Attributes, String> wrongEmail = Map.of(EMAIL,"wrong email");
 
         assertAll(() -> {
             assertTrue(service.get(wrongId).isEmpty());
             assertTrue(service.get(wrongName).isEmpty());
             assertTrue(service.get(wrongSpecialization).isEmpty());
+            assertTrue(service.get(wrongPhone).isEmpty());
+            assertTrue(service.get(wrongEmail).isEmpty());
         });
     }
 
