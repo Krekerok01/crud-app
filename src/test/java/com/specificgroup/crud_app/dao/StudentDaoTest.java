@@ -56,24 +56,9 @@ public class StudentDaoTest {
         postgreSQLContainer.stop();
     }
 
-    @Order(4)
     @Test
-    void createNewStudentTest() {
-        CreateRequest createRequest = new CreateRequest.Builder()
-            .name("Varvara")
-            .age("22")
-            .phone("+375777777777")
-            .email("test@gmail.com")
-            .build();
-
-        Long result = studentDao.create(createRequest);
-
-        assertNotNull(result);
-        assertEquals(3L, result);
-    }
-
+    @DisplayName("Get students by id")
     @Order(1)
-    @Test
     void getBySpecificationTest_IdAttribute() {
         List<Student> expected = List.of(buildKate());
         Map<Attributes, String> attributes = new HashMap<>();
@@ -85,8 +70,9 @@ public class StudentDaoTest {
         assertEquals(expected, result);
     }
 
-    @Order(2)
     @Test
+    @DisplayName("Get students by name")
+    @Order(2)
     void getBySpecificationTest_NameAttribute() {
         List<Student> expected = List.of(buildNikita());
         Map<Attributes, String> attributes = new HashMap<>();
@@ -98,8 +84,9 @@ public class StudentDaoTest {
         assertEquals(expected, result);
     }
 
-    @Order(3)
     @Test
+    @DisplayName("Get students")
+    @Order(3)
     void getTest_WithoutAttributes() {
         List<Student> expected = List.of(buildKate(), buildNikita());
 
@@ -111,6 +98,24 @@ public class StudentDaoTest {
     }
 
     @Test
+    @DisplayName("Create new student")
+    @Order(4)
+    void createNewStudentTest() {
+        CreateRequest createRequest = new CreateRequest.Builder()
+                .name("Varvara")
+                .age("22")
+                .phone("+375777777777")
+                .email("test@gmail.com")
+                .build();
+
+        Long result = studentDao.create(createRequest);
+
+        assertNotNull(result);
+        assertEquals(3L, result);
+    }
+
+    @Test
+    @DisplayName("Update the student. Successful request")
     void updateStudentTest_SuccessfulRequest() {
         Long expected = 1L;
         UpdateRequest updateRequest = new UpdateRequest.Builder()
@@ -128,6 +133,7 @@ public class StudentDaoTest {
     }
 
     @Test
+    @DisplayName("Update the student. Unsuccessful request")
     void updateStudentTest_UnsuccessfulRequest() {
         Long expected = -1L;
         UpdateRequest updateRequest = new UpdateRequest.Builder()
@@ -145,6 +151,7 @@ public class StudentDaoTest {
     }
 
     @Test
+    @DisplayName("Get contact detail id by student id")
     void getContactDetailsIdByMainEntityIdTest(){
         Long expected = 2L;
 
@@ -155,6 +162,7 @@ public class StudentDaoTest {
     }
 
     @Test
+    @DisplayName("Delete student by contact detail id")
     void deleteStudentByContactDetailIdTest() {
         assertTrue(studentDao.deleteByContactDetailId(3L));
     }

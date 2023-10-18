@@ -11,6 +11,7 @@ import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.exception.ValidationException;
 import com.specificgroup.crud_app.service.impl.StudentService;
 import com.specificgroup.crud_app.util.Attributes;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
@@ -32,6 +33,7 @@ public class StudentServiceTest {
     private Service service = new StudentService(studentDao);
 
     @Test
+    @DisplayName("Create a student. Successful request")
     void createStudentTest_SuccessfulRequest(){
         CreateRequest createRequest = new CreateRequest.Builder()
                 .name("Test")
@@ -47,6 +49,7 @@ public class StudentServiceTest {
     }
 
     @Test
+    @DisplayName("Create a student. Unsuccessful requests")
     void createStudentTest_UnsuccessfulRequests(){
         CreateRequest nameValidationError = new CreateRequest.Builder()
                 .name("123645")
@@ -86,6 +89,7 @@ public class StudentServiceTest {
     }
 
     @Test
+    @DisplayName("Get students by attributes. Successful request")
     void getStudentsByAttributesTest_SuccessfulRequest(){
         Map<Attributes, String> attributes = new HashMap<>();
         attributes.put(ID,"1");
@@ -105,6 +109,7 @@ public class StudentServiceTest {
     }
 
     @Test
+    @DisplayName("Get students. Successful request")
     void getStudentsTest_SuccessfulRequest(){
         Map<Attributes, String> attributes = new HashMap<>();
         List<Student> students = new ArrayList<>();
@@ -121,6 +126,7 @@ public class StudentServiceTest {
     }
 
     @Test
+    @DisplayName("Get students by attributes. Unsuccessful request")
     void getStudentsByAttributesTest_UnsuccessfulRequests(){
         Map<Attributes, String> wrongId = Map.of(ID, "A");
         Map<Attributes, String> wrongName = Map.of(NAME,"123658");
@@ -138,6 +144,7 @@ public class StudentServiceTest {
     }
 
     @Test
+    @DisplayName("Update the student. Successful request")
     void updateStudentTest_SuccessfulRequest(){
         UpdateRequest updateRequest = new UpdateRequest.Builder()
                 .id("1")
@@ -157,7 +164,8 @@ public class StudentServiceTest {
     }
 
     @Test
-    void updateStudentTest_UnsuccessfulRequest(){
+    @DisplayName("Update the student. Unsuccessful requests")
+    void updateStudentTest_UnsuccessfulRequests(){
         UpdateRequest idValidationError = new UpdateRequest.Builder()
                 .id("A")
                 .name("Test")
@@ -208,6 +216,7 @@ public class StudentServiceTest {
     }
 
     @Test
+    @DisplayName("Delete the student by id. Successful request")
     void deleteByIdTest() {
         Mockito.doReturn(1L).when(studentDao).getContactDetailsIdByMainEntityId(anyLong());
         Mockito.doReturn(true).when(studentDao).deleteByContactDetailId(anyLong());

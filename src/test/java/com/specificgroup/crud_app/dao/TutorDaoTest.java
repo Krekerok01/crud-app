@@ -58,24 +58,9 @@ public class TutorDaoTest {
         postgreSQLContainer.stop();
     }
 
-    @Order(4)
     @Test
-    void createNewTutorTest() {
-        CreateRequest createRequest = new CreateRequest.Builder()
-            .name("Varvara")
-            .specialization("Developer")
-            .phone("+375777777777")
-            .email("test@gmail.com")
-            .build();
-
-        Long result = tutorDao.create(createRequest);
-
-        assertNotNull(result);
-        assertEquals(3L, result);
-    }
-
+    @DisplayName("Get tutors by id")
     @Order(1)
-    @Test
     void getBySpecificationTest_IdAttribute() {
         List<Tutor> expected = List.of(buildVlad());
         Map<Attributes, String> attributes = new HashMap<>();
@@ -87,8 +72,9 @@ public class TutorDaoTest {
         assertEquals(expected, result);
     }
 
-    @Order(2)
     @Test
+    @DisplayName("Get tutors by name")
+    @Order(2)
     void getBySpecificationTest_NameAttribute() {
         List<Tutor> expected = List.of(buildIra());
         Map<Attributes, String> attributes = new HashMap<>();
@@ -100,8 +86,9 @@ public class TutorDaoTest {
         assertEquals(expected, result);
     }
 
-    @Order(3)
     @Test
+    @DisplayName("Get tutors")
+    @Order(3)
     void getTest_WithoutAttributes() {
         List<Tutor> expected = List.of(buildVlad(), buildIra());
 
@@ -113,6 +100,24 @@ public class TutorDaoTest {
     }
 
     @Test
+    @DisplayName("Create new tutor")
+    @Order(4)
+    void createNewTutorTest() {
+        CreateRequest createRequest = new CreateRequest.Builder()
+                .name("Varvara")
+                .specialization("Developer")
+                .phone("+375777777777")
+                .email("test@gmail.com")
+                .build();
+
+        Long result = tutorDao.create(createRequest);
+
+        assertNotNull(result);
+        assertEquals(3L, result);
+    }
+
+    @Test
+    @DisplayName("Update the tutor. Successful request")
     void updateTutorTest_SuccessfulRequest() {
         Long expected = 1L;
         UpdateRequest updateRequest = new UpdateRequest.Builder()
@@ -130,6 +135,7 @@ public class TutorDaoTest {
     }
 
     @Test
+    @DisplayName("Update the tutor. Unsuccessful request")
     void updateTutorTest_UnsuccessfulRequest() {
         Long expected = -1L;
         UpdateRequest updateRequest = new UpdateRequest.Builder()
@@ -147,6 +153,7 @@ public class TutorDaoTest {
     }
 
     @Test
+    @DisplayName("Get contact detail id by tutor id")
     void getContactDetailsIdByMainEntityIdTest(){
         Long expected = 4L;
 
@@ -157,6 +164,7 @@ public class TutorDaoTest {
     }
 
     @Test
+    @DisplayName("Delete tutor by contact detail id")
     void deleteTutorByContactDetailIdTest() {
         assertTrue(tutorDao.deleteByContactDetailId(3L));
     }

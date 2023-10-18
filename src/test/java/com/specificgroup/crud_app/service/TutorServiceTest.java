@@ -4,16 +4,14 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dao.Dao;
 import com.specificgroup.crud_app.dao.TutorDao;
 import com.specificgroup.crud_app.dao.specification.JdbcSpecification;
-import com.specificgroup.crud_app.dao.specification.StudentsSpecification;
 import com.specificgroup.crud_app.dao.specification.TutorSpecification;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
-import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.exception.ValidationException;
-import com.specificgroup.crud_app.service.impl.StudentService;
 import com.specificgroup.crud_app.service.impl.TutorService;
 import com.specificgroup.crud_app.util.Attributes;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
@@ -35,6 +33,7 @@ public class TutorServiceTest {
     private Service service = new TutorService(tutorDao);
 
     @Test
+    @DisplayName("Create a tutor. Successful request")
     void createTutorTest_SuccessfulRequest(){
         CreateRequest createRequest = new CreateRequest.Builder()
                 .name("Test")
@@ -50,6 +49,7 @@ public class TutorServiceTest {
     }
 
     @Test
+    @DisplayName("Create a tutor. Unsuccessful requests")
     void createTutorTest_UnsuccessfulRequests(){
         CreateRequest nameValidationError = new CreateRequest.Builder()
                 .name("123645")
@@ -89,6 +89,7 @@ public class TutorServiceTest {
     }
 
     @Test
+    @DisplayName("Get tutors by attributes. Successful request")
     void getTutorsByAttributesTest_SuccessfulRequest(){
         Map<Attributes, String> attributes = new HashMap<>();
         attributes.put(ID,"1");
@@ -108,6 +109,7 @@ public class TutorServiceTest {
     }
 
     @Test
+    @DisplayName("Get tutors. Successful request")
     void getTutorsTest_SuccessfulRequest(){
         Map<Attributes, String> attributes = new HashMap<>();
         List<Tutor> tutors = new ArrayList<>();
@@ -124,6 +126,7 @@ public class TutorServiceTest {
     }
 
     @Test
+    @DisplayName("Get tutors by attributes. Unsuccessful request")
     void getTutorsByAttributesTest_UnsuccessfulRequests(){
         Map<Attributes, String> wrongId = Map.of(ID, "A");
         Map<Attributes, String> wrongName = Map.of(NAME,"123658");
@@ -141,6 +144,7 @@ public class TutorServiceTest {
     }
 
     @Test
+    @DisplayName("Update the tutor. Successful request")
     void updateTutorTest_SuccessfulRequest(){
         UpdateRequest updateRequest = new UpdateRequest.Builder()
                 .id("1")
@@ -160,7 +164,8 @@ public class TutorServiceTest {
     }
 
     @Test
-    void updateTutorTest_UnsuccessfulRequest(){
+    @DisplayName("Update the tutor. Unsuccessful requests")
+    void updateTutorTest_UnsuccessfulRequests(){
         UpdateRequest idValidationError = new UpdateRequest.Builder()
                 .id("A")
                 .name("Test")
@@ -211,6 +216,7 @@ public class TutorServiceTest {
     }
 
     @Test
+    @DisplayName("Delete the tutor by id. Successful request")
     void deleteByIdTest() {
         Mockito.doReturn(1L).when(tutorDao).getContactDetailsIdByMainEntityId(anyLong());
         Mockito.doReturn(true).when(tutorDao).deleteByContactDetailId(anyLong());
