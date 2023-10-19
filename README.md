@@ -76,7 +76,7 @@ Also, you can use other search parameters or a combination of them: name, specia
 
     ```
      {
-        "id":1
+        "id":1,
         "name":"Alexandra",
         "age":30,
         "phone":"+375299999999",
@@ -90,7 +90,7 @@ Also, you can use other search parameters or a combination of them: name, specia
 
     ```
      {
-        "id":1
+        "id":1,
         "name":"John",
         "specialization":"Dancing",
         "phone":"+375333333333",
