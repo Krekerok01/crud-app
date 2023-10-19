@@ -57,7 +57,7 @@ __Stop:__
 * To find all students use: GET ```http://localhost:8081/students/get```
 * To find specific student by id use: GET ```http://localhost:8081/students/get?id=<id>```
 
-Also, you can use other search parameters or a combination of them: name, age.
+Also, you can use other search parameters or a combination of them: name, age, phone, email.
 
 
 ### Tutors
@@ -65,7 +65,7 @@ Also, you can use other search parameters or a combination of them: name, age.
 * To find all tutors use: GET ```http://localhost:8081/tutors/get```
 * To find specific tutor by id use: GET ```http://localhost:8081/tutors/get?id=<id>```
  
-Also, you can use other search parameters or a combination of them: name, specialization.
+Also, you can use other search parameters or a combination of them: name, specialization, phone, email.
 
 
 ## Update:
