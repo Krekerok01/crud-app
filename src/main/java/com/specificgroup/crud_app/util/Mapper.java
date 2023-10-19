@@ -17,7 +17,7 @@ public class Mapper {
                 resultSet.getString("name"),
                 resultSet.getInt("age"),
                 new ContactDetails(
-                        resultSet.getLong("contact_id"),
+                        resultSet.getLong("contact_details_id"),
                         resultSet.getString("phone"),
                         resultSet.getString("email")
                 )
@@ -30,7 +30,7 @@ public class Mapper {
                 resultSet.getString("name"),
                 resultSet.getString("specialization"),
                 new ContactDetails(
-                        resultSet.getLong("contact_id"),
+                        resultSet.getLong("contact_details_id"),
                         resultSet.getString("phone"),
                         resultSet.getString("email")
                 )

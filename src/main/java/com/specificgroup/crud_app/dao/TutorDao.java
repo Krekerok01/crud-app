@@ -20,7 +20,7 @@ import static com.specificgroup.crud_app.util.Constants.Constant.INVALID_RESULT;
 import static com.specificgroup.crud_app.util.Constants.Delete.DELETE_BY_ID;
 import static com.specificgroup.crud_app.util.Constants.Insert.*;
 import static com.specificgroup.crud_app.util.Constants.Select.*;
-import static com.specificgroup.crud_app.util.Constants.Tables.TABLE_CONTACTS;
+import static com.specificgroup.crud_app.util.Constants.Tables.TABLE_CONTACT_DETAILS;
 import static com.specificgroup.crud_app.util.Constants.Tables.TABLE_TUTORS;
 import static com.specificgroup.crud_app.util.Constants.Update.*;
 
@@ -37,12 +37,12 @@ public class TutorDao implements Dao<Tutor> {
     @Override
     public Long create(CreateRequest request) {
         long result = INVALID_RESULT;
-        String tutorQuery = INSERT_COMMON_ENTITY.formatted(TABLE_TUTORS, INSERT_SETTING_TUTORS);
+        String tutorQuery = INSERT_MAIN_ENTITY.formatted(TABLE_TUTORS, INSERT_SETTING_TUTORS);
 
         Connection connection = connectionPool.openConnection();
 
         try (PreparedStatement tutorStatement = connection.prepareStatement(tutorQuery, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement contactStatement = connection.prepareStatement(INSERT_CONTACTS_DETAIL, Statement.RETURN_GENERATED_KEYS);){
+             PreparedStatement contactStatement = connection.prepareStatement(INSERT_CONTACT_DETAILS, Statement.RETURN_GENERATED_KEYS);){
             connection.setAutoCommit(false);
 
             Object[] contactInfo = {request.getPhone(), request.getEmail()};
@@ -51,8 +51,8 @@ public class TutorDao implements Dao<Tutor> {
             ResultSet contactsKeys = contactStatement.getGeneratedKeys();
 
             if (contactsKeys.next()) {
-                Long contactId = contactsKeys.getLong(1);
-                Object[] seq = {request.getName(), request.getSpecialization(),contactId};
+                Long contactDetailsId = contactsKeys.getLong(1);
+                Object[] seq = {request.getName(), request.getSpecialization(),contactDetailsId};
                 JdbcUtil.setStatement(tutorStatement, seq);
                 tutorStatement.execute();
 
@@ -149,7 +149,7 @@ public class TutorDao implements Dao<Tutor> {
     @Override
     public boolean deleteByContactDetailId(Long contactDetailsId) {
         int result;
-        String deleteSql = DELETE_BY_ID.formatted(TABLE_CONTACTS);
+        String deleteSql = DELETE_BY_ID.formatted(TABLE_CONTACT_DETAILS);
         try (Connection connection = connectionPool.openConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
             preparedStatement.setLong(1, contactDetailsId);
@@ -169,7 +169,7 @@ public class TutorDao implements Dao<Tutor> {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
-                contactDetailsId = resultSet.getLong("contact_id");
+                contactDetailsId = resultSet.getLong("contact_details_id");
         } catch (SQLException e) {
             logger.info(e.getMessage());
             throw new RuntimeException(e);
@@ -178,7 +178,7 @@ public class TutorDao implements Dao<Tutor> {
     }
 
     private String buildContactsSqlQuery() {
-        String sql = UPDATE.formatted(TABLE_CONTACTS);
+        String sql = UPDATE.formatted(TABLE_CONTACT_DETAILS);
         StringBuilder sqlBuilder = new StringBuilder(sql);
         sqlBuilder.append(UPDATE_PHONE).append(UPDATE_COMMA)
             .append(UPDATE_EMAIL)

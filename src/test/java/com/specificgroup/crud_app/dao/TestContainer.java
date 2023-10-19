@@ -61,10 +61,10 @@ public class TestContainer extends PostgreSQLContainer<TestContainer> {
         public static final String destroyDb = """
                 DROP TABLE IF EXISTS students;
                 DROP TABLE IF EXISTS tutors;
-                DROP TABLE IF EXISTS contacts;  
+                DROP TABLE IF EXISTS contact_details;  
                 """;
         public static final String createDb = """
-                CREATE TABLE IF NOT EXISTS contacts
+                CREATE TABLE IF NOT EXISTS contact_details
                 (
                     id  BIGSERIAL PRIMARY KEY,
                     phone VARCHAR(13)  NOT NULL,
@@ -76,7 +76,7 @@ public class TestContainer extends PostgreSQLContainer<TestContainer> {
                     id BIGSERIAL PRIMARY KEY,
                     name VARCHAR(128) NOT NULL,
                     age INTEGER NOT NULL,
-                    contact_id BIGINT REFERENCES contacts (id) ON DELETE CASCADE
+                    contact_details_id BIGINT REFERENCES contact_details (id) ON DELETE CASCADE
                 );
                                 
                 CREATE TABLE IF NOT EXISTS tutors
@@ -84,22 +84,22 @@ public class TestContainer extends PostgreSQLContainer<TestContainer> {
                     id BIGSERIAL PRIMARY KEY,
                     name VARCHAR(128) NOT NULL,
                     specialization VARCHAR(128) NOT NULL,
-                    contact_id BIGINT REFERENCES contacts (id) ON DELETE CASCADE
-                ); """;
+                    contact_details_id BIGINT REFERENCES contact_details (id) ON DELETE CASCADE
+                );""";
     }
 
     public static final String insertDb = """
-            INSERT INTO contacts(phone, email)
+            INSERT INTO contact_details(phone, email)
             VALUES ('+375111111111', 'test1@gmail.com'),
                    ('+375222222222', 'test2@gmail.com'),
                    ('+375333333333', 'test3@gmail.com'),
                    ('+375444444444', 'test4@gmail.com');
                              
-            INSERT INTO students(name, age, contact_id)
+            INSERT INTO students(name, age, contact_details_id)
             VALUES ('Kate', 20, 1),
                    ('Nikita', 21, 2);
                         
-            INSERT INTO tutors(name, specialization, contact_id)
+            INSERT INTO tutors(name, specialization, contact_details_id)
             VALUES ('Vlad', 'QA', 3),
                    ('Ira', 'Developer', 4);
                        """;

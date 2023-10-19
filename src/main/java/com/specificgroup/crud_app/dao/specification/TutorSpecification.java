@@ -19,7 +19,6 @@ public class TutorSpecification implements JdbcSpecification<Tutor> {
         this.attributes = attributes;
     }
 
-
     @Override
     public List<Tutor> searchFilter(Connection connection, String sql) throws SQLException {
         List<Tutor> tutors = new ArrayList<>();

@@ -47,13 +47,13 @@ public final class Constants {
         private Insert() {
             throw new UnsupportedOperationException();
         }
-        public static final String INSERT_COMMON_ENTITY = """
-                INSERT INTO %s(name, %s, contact_id)
+        public static final String INSERT_MAIN_ENTITY = """
+                INSERT INTO %s(name, %s, contact_details_id)
                 VALUES (?,?,?);""";
         public static final String INSERT_SETTING_STUDENTS = "age";
         public static final String INSERT_SETTING_TUTORS = "specialization";
-        public static final String INSERT_CONTACTS_DETAIL = """
-                INSERT INTO contacts(phone, email)
+        public static final String INSERT_CONTACT_DETAILS = """
+                INSERT INTO contact_details(phone, email)
                 VALUES (?,?);""";
 
     }
@@ -65,20 +65,20 @@ public final class Constants {
         }
 
         public static final String SELECT = """
-                SELECT e.id, e.name, %s, c.id as contact_id, c.phone, c.email
+                SELECT e.id, e.name, %s, c.id as contact_details_id, c.phone, c.email
                 FROM %s e
-                         JOIN contacts c on c.id = e.contact_id
+                         JOIN contact_details c on c.id = e.contact_details_id
                 WHERE 
                 """;
         public static final String SELECT_WITHOUT_ATTRIBUTES = """
-                SELECT e.id, e.name, %s, c.id as contact_id, c.phone, c.email
+                SELECT e.id, e.name, %s, c.id as contact_details_id, c.phone, c.email
                 FROM %s e
-                         JOIN contacts c on c.id = e.contact_id
+                         JOIN contact_details c on c.id = e.contact_details_id
                 """;
         public static final String SELECT_CONTACT_DETAIL_ID_BY_ENTITY_ID =  """
-                SELECT c.id as contact_id
+                SELECT c.id as contact_details_id
                 FROM %s e
-                         JOIN contacts c on c.id = e.contact_id
+                         JOIN contact_details c on c.id = e.contact_details_id
                 WHERE e.id=?
                 """;
         public static final String SELECT_ID = "e.id=?";
@@ -130,7 +130,7 @@ public final class Constants {
 
         public static final String TABLE_STUDENTS = "students";
         public static final String TABLE_TUTORS = "tutors";
-        public static final String TABLE_CONTACTS = "contacts";
+        public static final String TABLE_CONTACT_DETAILS = "contact_details";
     }
 
     public final static class Constant {
