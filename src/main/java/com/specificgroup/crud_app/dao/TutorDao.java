@@ -52,7 +52,7 @@ public class TutorDao implements Dao<Tutor> {
 
             if (contactsKeys.next()) {
                 Long contactDetailsId = contactsKeys.getLong(1);
-                Object[] seq = {request.getName(), request.getSpecialization(),contactDetailsId};
+                Object[] seq = {request.getName(), request.getSpecialization().trim(),contactDetailsId};
                 JdbcUtil.setStatement(tutorStatement, seq);
                 tutorStatement.execute();
 

@@ -40,6 +40,7 @@ public class TutorService implements Service {
                 Validator<CreateRequest> validator = Validator.of(createRequest)
                         .validator(request -> request.getName().matches(NAME_VALIDATION), "Name is not a string")
                         .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization is not a string")
+                        .validator(request -> !request.getSpecialization().trim().isEmpty(), "Specialization cannot be empty")
                         .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                         .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
                 if (!validator.isEmpty()) throw new ValidationException();
@@ -86,6 +87,7 @@ public class TutorService implements Service {
                     .validator(request -> request.getId().matches(DIGIT), "Tutor id is not digit.")
                     .validator(request -> request.getName().matches(NAME_VALIDATION), "Name is not a string")
                     .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization is not a string")
+                    .validator(request -> !request.getSpecialization().trim().isEmpty(), "Specialization cannot be empty")
                     .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                     .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
