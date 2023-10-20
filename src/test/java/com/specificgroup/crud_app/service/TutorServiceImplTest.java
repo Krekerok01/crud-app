@@ -1,15 +1,14 @@
 package com.specificgroup.crud_app.service;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
-import com.specificgroup.crud_app.dao.Dao;
 import com.specificgroup.crud_app.dao.TutorDao;
-import com.specificgroup.crud_app.dao.specification.JdbcSpecification;
-import com.specificgroup.crud_app.dao.specification.TutorSpecification;
+import com.specificgroup.crud_app.dao.impl.TutorDaoImpl;
+import com.specificgroup.crud_app.dao.impl.specification.TutorSpecification;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.exception.ValidationException;
-import com.specificgroup.crud_app.service.impl.TutorService;
+import com.specificgroup.crud_app.service.impl.TutorServiceImpl;
 import com.specificgroup.crud_app.util.Attributes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,12 +24,12 @@ import static com.specificgroup.crud_app.util.Attributes.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class TutorServiceTest {
+public class TutorServiceImplTest {
 
-    private final Dao<Tutor> tutorDao = Mockito.mock(TutorDao.class);
-    private final JdbcSpecification<Tutor> specification = Mockito.mock(TutorSpecification.class);
+    private final TutorDao tutorDao = Mockito.mock(TutorDaoImpl.class);
+    private final TutorSpecification specification = Mockito.mock(TutorSpecification.class);
     @InjectMocks
-    private Service service = new TutorService(tutorDao);
+    private TutorService tutorService = new TutorServiceImpl(tutorDao);
 
     @Test
     @DisplayName("Create a tutor. Successful request")
@@ -43,7 +42,7 @@ public class TutorServiceTest {
                 .build();
         Mockito.doReturn(1L).when(tutorDao).create(createRequest);
 
-        assertEquals(1L, service.create(createRequest));
+        assertEquals(1L, tutorService.create(createRequest));
         verify(tutorDao, times(1)).create(createRequest);
         verifyNoMoreInteractions(tutorDao);
     }
@@ -81,10 +80,10 @@ public class TutorServiceTest {
 
 
         assertAll(() -> {
-            assertThrowsExactly(ValidationException.class, () -> service.create(nameValidationError));
-            assertThrowsExactly(ValidationException.class, () -> service.create(specializationValidationError));
-            assertThrowsExactly(ValidationException.class, () -> service.create(phoneValidationError));
-            assertThrowsExactly(ValidationException.class, () -> service.create(emailValidationError));
+            assertThrowsExactly(ValidationException.class, () -> tutorService.create(nameValidationError));
+            assertThrowsExactly(ValidationException.class, () -> tutorService.create(specializationValidationError));
+            assertThrowsExactly(ValidationException.class, () -> tutorService.create(phoneValidationError));
+            assertThrowsExactly(ValidationException.class, () -> tutorService.create(emailValidationError));
         });
     }
 
@@ -100,7 +99,7 @@ public class TutorServiceTest {
 
         Mockito.doReturn(tutors).when(tutorDao).getBySpecification(specification);
 
-        List<JsonObject> result = service.get(attributes);
+        List<JsonObject> result = tutorService.get(attributes);
 
         assertEquals(expected, result);
         verify(tutorDao, times(1)).getBySpecification(any(TutorSpecification.class));
@@ -117,7 +116,7 @@ public class TutorServiceTest {
 
         Mockito.doReturn(tutors).when(tutorDao).get();
 
-        List<JsonObject> result = service.get(attributes);
+        List<JsonObject> result = tutorService.get(attributes);
 
         assertEquals(expected, result);
         verify(tutorDao, times(1)).get();
@@ -135,11 +134,11 @@ public class TutorServiceTest {
         Map<Attributes, String> wrongEmail = Map.of(EMAIL,"wrong email");
 
         assertAll(() -> {
-            assertTrue(service.get(wrongId).isEmpty());
-            assertTrue(service.get(wrongName).isEmpty());
-            assertTrue(service.get(wrongSpecialization).isEmpty());
-            assertTrue(service.get(wrongPhone).isEmpty());
-            assertTrue(service.get(wrongEmail).isEmpty());
+            assertTrue(tutorService.get(wrongId).isEmpty());
+            assertTrue(tutorService.get(wrongName).isEmpty());
+            assertTrue(tutorService.get(wrongSpecialization).isEmpty());
+            assertTrue(tutorService.get(wrongPhone).isEmpty());
+            assertTrue(tutorService.get(wrongEmail).isEmpty());
         });
     }
 
@@ -154,11 +153,11 @@ public class TutorServiceTest {
                 .email("test@gmail.com")
                 .build();
 
-        Mockito.doReturn(1L).when(tutorDao).getContactDetailsIdByMainEntityId(anyLong());
+        Mockito.doReturn(1L).when(tutorDao).getContactDetailsIdByTutorId(anyLong());
         Mockito.doReturn(1L).when(tutorDao).update(updateRequest, 1L);
 
-        assertEquals(1L, service.update(updateRequest));
-        verify(tutorDao, times(1)).getContactDetailsIdByMainEntityId(anyLong());
+        assertEquals(1L, tutorService.update(updateRequest));
+        verify(tutorDao, times(1)).getContactDetailsIdByTutorId(anyLong());
         verify(tutorDao, times(1)).update(updateRequest, 1L);
         verifyNoMoreInteractions(tutorDao);
     }
@@ -207,22 +206,22 @@ public class TutorServiceTest {
                 .build();
 
         assertAll(() -> {
-            assertThrowsExactly(ValidationException.class, () -> service.update(idValidationError));
-            assertThrowsExactly(ValidationException.class, () -> service.update(nameValidationError));
-            assertThrowsExactly(ValidationException.class, () -> service.update(specializationValidationError));
-            assertThrowsExactly(ValidationException.class, () -> service.update(phoneValidationError));
-            assertThrowsExactly(ValidationException.class, () -> service.update(emailValidationError));
+            assertThrowsExactly(ValidationException.class, () -> tutorService.update(idValidationError));
+            assertThrowsExactly(ValidationException.class, () -> tutorService.update(nameValidationError));
+            assertThrowsExactly(ValidationException.class, () -> tutorService.update(specializationValidationError));
+            assertThrowsExactly(ValidationException.class, () -> tutorService.update(phoneValidationError));
+            assertThrowsExactly(ValidationException.class, () -> tutorService.update(emailValidationError));
         });
     }
 
     @Test
     @DisplayName("Delete the tutor by id. Successful request")
     void deleteByIdTest() {
-        Mockito.doReturn(1L).when(tutorDao).getContactDetailsIdByMainEntityId(anyLong());
+        Mockito.doReturn(1L).when(tutorDao).getContactDetailsIdByTutorId(anyLong());
         Mockito.doReturn(true).when(tutorDao).deleteByContactDetailId(anyLong());
 
-        assertTrue(service.deleteById("1"));
-        verify(tutorDao, times(1)).getContactDetailsIdByMainEntityId(anyLong());
+        assertTrue(tutorService.deleteById("1"));
+        verify(tutorDao, times(1)).getContactDetailsIdByTutorId(anyLong());
         verify(tutorDao, times(1)).deleteByContactDetailId(anyLong());
         verifyNoMoreInteractions(tutorDao);
     }

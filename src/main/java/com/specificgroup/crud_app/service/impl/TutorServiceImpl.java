@@ -1,33 +1,39 @@
 package com.specificgroup.crud_app.service.impl;
 
+import static com.specificgroup.crud_app.util.Attributes.EMAIL;
+import static com.specificgroup.crud_app.util.Attributes.ID;
+import static com.specificgroup.crud_app.util.Attributes.NAME;
+import static com.specificgroup.crud_app.util.Attributes.PHONE;
+import static com.specificgroup.crud_app.util.Attributes.SPECIALIZATION;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.DIGIT;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.EMAIL_VALIDATION;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.INVALID_RESULT;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.NAME_VALIDATION;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.PHONE_VALIDATION;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.SPECIALIZATION_VALIDATION;
+
 import com.github.cliftonlabs.json_simple.JsonObject;
-import com.specificgroup.crud_app.dao.Dao;
+import com.specificgroup.crud_app.dao.TutorDao;
+import com.specificgroup.crud_app.dao.impl.specification.TutorSpecification;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.exception.EntityNotFoundException;
 import com.specificgroup.crud_app.exception.ValidationException;
-import com.specificgroup.crud_app.service.Service;
+import com.specificgroup.crud_app.service.TutorService;
 import com.specificgroup.crud_app.util.Attributes;
-import com.specificgroup.crud_app.dao.specification.TutorSpecification;
 import com.specificgroup.crud_app.util.validation.Validator;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import static com.specificgroup.crud_app.util.Attributes.*;
-import static com.specificgroup.crud_app.util.Attributes.EMAIL;
-import static com.specificgroup.crud_app.util.validation.ValidationConstants.*;
+public class TutorServiceImpl implements TutorService {
 
-public class TutorService implements Service {
+    private final TutorDao tutorDao;
+    private final Logger logger =  Logger.getLogger(TutorServiceImpl.class.getName());
 
-    private final Dao<Tutor> tutorDao;
-    private final Logger logger =  Logger.getLogger(TutorService.class.getName());
-
-    public TutorService(Dao<Tutor> tutorDao) {
+    public TutorServiceImpl(TutorDao tutorDao) {
         this.tutorDao = tutorDao;
     }
 
@@ -137,7 +143,7 @@ public class TutorService implements Service {
     }
 
     private Long getContactDetailIdByTutorId(Long id) {
-        Long contactDetailsId = tutorDao.getContactDetailsIdByMainEntityId(id);
+        Long contactDetailsId = tutorDao.getContactDetailsIdByTutorId(id);
         if (contactDetailsId == null) throw new EntityNotFoundException();
         return contactDetailsId;
     }

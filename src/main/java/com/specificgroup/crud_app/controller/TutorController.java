@@ -10,7 +10,7 @@ import static com.specificgroup.crud_app.util.Attributes.SPECIALIZATION;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
-import com.specificgroup.crud_app.service.Service;
+import com.specificgroup.crud_app.service.TutorService;
 import com.specificgroup.crud_app.util.Attributes;
 import com.sun.net.httpserver.HttpExchange;
 import java.net.URI;
@@ -22,10 +22,10 @@ import java.util.Optional;
 
 public class TutorController extends Controller {
 
-    private final Service service;
+    private final TutorService tutorService;
 
-    public TutorController(Service service) {
-        this.service = service;
+    public TutorController(TutorService tutorService) {
+        this.tutorService = tutorService;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class TutorController extends Controller {
                 .phone(jsonObject.getString(PHONE))
                 .email(jsonObject.getString(EMAIL))
                 .build();
-        return service.create(createRequest);
+        return tutorService.create(createRequest);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class TutorController extends Controller {
         URI requestURI = httpExchange.getRequestURI();
         Map<Attributes, String> attributes = new HashMap<>();
         searchAttributeUrl(requestURI, attributes);
-        return service.get(attributes);
+        return tutorService.get(attributes);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class TutorController extends Controller {
                 .email(jsonObject.getString(EMAIL))
                 .build();
 
-        return service.update(build);
+        return tutorService.update(build);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class TutorController extends Controller {
         Optional<String> id = readAttributes(uri, ID);
         boolean result = false;
         if (id.isPresent()) {
-            result = service.deleteById(id.get());
+            result = tutorService.deleteById(id.get());
         }
         return result;
     }

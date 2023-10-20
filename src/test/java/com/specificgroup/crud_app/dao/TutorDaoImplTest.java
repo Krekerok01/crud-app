@@ -9,12 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.specificgroup.crud_app.dao.specification.StudentsSpecification;
-import com.specificgroup.crud_app.dao.specification.TutorSpecification;
+import com.specificgroup.crud_app.dao.impl.TutorDaoImpl;
+import com.specificgroup.crud_app.dao.impl.specification.TutorSpecification;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.ContactDetails;
-import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.entity.Tutor;
 import com.specificgroup.crud_app.util.Attributes;
 import java.util.HashMap;
@@ -35,11 +34,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TutorDaoTest {
+public class TutorDaoImplTest {
 
     @Container
     private static final PostgreSQLContainer<TestContainer> postgreSQLContainer = TestContainer.getContainer();
-    private static Dao<Tutor> tutorDao;
+    private static TutorDao tutorDao;
 
     @BeforeAll
     @DisplayName("Create db")
@@ -50,7 +49,7 @@ public class TutorDaoTest {
         attributes.put(USERNAME_KEY, postgreSQLContainer.getUsername());
         attributes.put(URL_KEY, postgreSQLContainer.getJdbcUrl());
         attributes.put(POOL_SIZE, "5");
-        tutorDao = new TutorDao.Builder().type(FLEXIBLE).property(attributes).build();
+        tutorDao = new TutorDaoImpl.Builder().type(FLEXIBLE).property(attributes).build();
     }
 
     @AfterAll
@@ -157,7 +156,7 @@ public class TutorDaoTest {
     void getContactDetailsIdByMainEntityIdTest(){
         Long expected = 4L;
 
-        Long result = tutorDao.getContactDetailsIdByMainEntityId(2L);
+        Long result = tutorDao.getContactDetailsIdByTutorId(2L);
 
         assertNotNull(result);
         assertEquals(expected, result);

@@ -10,7 +10,7 @@ import static com.specificgroup.crud_app.util.Attributes.SPECIALIZATION;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
-import com.specificgroup.crud_app.service.Service;
+import com.specificgroup.crud_app.service.StudentService;
 import com.specificgroup.crud_app.util.Attributes;
 import com.sun.net.httpserver.HttpExchange;
 import java.net.URI;
@@ -22,10 +22,10 @@ import java.util.Optional;
 
 class StudentController extends Controller {
 
-    private final Service service;
+    private final StudentService studentService;
 
-    public StudentController(final Service service) {
-        this.service = service;
+    public StudentController(final StudentService studentService) {
+        this.studentService = studentService;
     }
 
     @Override
@@ -39,7 +39,7 @@ class StudentController extends Controller {
                 .email(jsonObject.getString(EMAIL))
                 .build();
 
-        return service.create(createRequest);
+        return studentService.create(createRequest);
     }
 
     @Override
@@ -47,7 +47,7 @@ class StudentController extends Controller {
         URI requestURI = httpExchange.getRequestURI();
         Map<Attributes, String> attributes = new HashMap<>();
         searchAttributeUrl(requestURI, attributes);
-        return service.get(attributes);
+        return studentService.get(attributes);
     }
 
     @Override
@@ -62,7 +62,7 @@ class StudentController extends Controller {
                 .email(jsonObject.getString(EMAIL))
                 .build();
 
-        return service.update(build);
+        return studentService.update(build);
     }
 
     @Override
@@ -71,7 +71,7 @@ class StudentController extends Controller {
         Optional<String> id = readAttributes(uri, ID);
         boolean result = false;
         if (id.isPresent()) {
-            result = service.deleteById(id.get());
+            result = studentService.deleteById(id.get());
         }
         return result;
     }

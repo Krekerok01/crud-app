@@ -9,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.specificgroup.crud_app.dao.specification.StudentsSpecification;
+import com.specificgroup.crud_app.dao.impl.StudentDaoImpl;
+import com.specificgroup.crud_app.dao.impl.specification.StudentSpecification;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.ContactDetails;
@@ -33,11 +34,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class StudentDaoTest {
+public class StudentDaoImplTest {
 
     @Container
     private static final PostgreSQLContainer<TestContainer> postgreSQLContainer = TestContainer.getContainer();
-    private static Dao<Student> studentDao;
+    private static StudentDao studentDao;
 
     @BeforeAll
     @DisplayName("Create db")
@@ -48,7 +49,7 @@ public class StudentDaoTest {
         attributes.put(USERNAME_KEY, postgreSQLContainer.getUsername());
         attributes.put(URL_KEY, postgreSQLContainer.getJdbcUrl());
         attributes.put(POOL_SIZE, "5");
-        studentDao = new StudentDao.Builder().type(FLEXIBLE).property(attributes).build();
+        studentDao = new StudentDaoImpl.Builder().type(FLEXIBLE).property(attributes).build();
     }
 
     @AfterAll
@@ -63,7 +64,7 @@ public class StudentDaoTest {
         List<Student> expected = List.of(buildKate());
         Map<Attributes, String> attributes = new HashMap<>();
         attributes.put(Attributes.ID, "1");
-        List<Student> result = studentDao.getBySpecification(new StudentsSpecification(attributes));
+        List<Student> result = studentDao.getBySpecification(new StudentSpecification(attributes));
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -77,7 +78,7 @@ public class StudentDaoTest {
         List<Student> expected = List.of(buildNikita());
         Map<Attributes, String> attributes = new HashMap<>();
         attributes.put(Attributes.NAME, "Nikita");
-        List<Student> result = studentDao.getBySpecification(new StudentsSpecification(attributes));
+        List<Student> result = studentDao.getBySpecification(new StudentSpecification(attributes));
 
         assertNotNull(result);
         assertEquals(1, result.size());
@@ -155,7 +156,7 @@ public class StudentDaoTest {
     void getContactDetailsIdByMainEntityIdTest(){
         Long expected = 2L;
 
-        Long result = studentDao.getContactDetailsIdByMainEntityId(2L);
+        Long result = studentDao.getContactDetailsIdByStudentId(2L);
 
         assertNotNull(result);
         assertEquals(expected, result);

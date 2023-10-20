@@ -1,6 +1,7 @@
-package com.specificgroup.crud_app.dao.specification;
+package com.specificgroup.crud_app.dao.impl.specification;
 
-import com.specificgroup.crud_app.entity.Tutor;
+
+import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.util.Attributes;
 import com.specificgroup.crud_app.util.Mapper;
 import com.specificgroup.crud_app.util.database.JdbcUtil;
@@ -11,17 +12,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class TutorSpecification implements JdbcSpecification<Tutor> {
+
+public class StudentSpecification {
 
     private final Map<Attributes, String> attributes;
 
-    public TutorSpecification(final Map<Attributes, String> attributes) {
+    public StudentSpecification(final Map<Attributes, String> attributes) {
         this.attributes = attributes;
     }
 
-    @Override
-    public List<Tutor> searchFilter(Connection connection, String sql) throws SQLException {
-        List<Tutor> tutors = new ArrayList<>();
+    public List<Student> searchFilter(Connection connection, String sql) throws SQLException {
+        List<Student> students = new ArrayList<>();
         StringBuilder sqlBuilder = new StringBuilder(sql);
         Queue<Object> queue = new ArrayDeque<>();
         JdbcUtil.preparedRequest(sqlBuilder, queue, attributes);
@@ -33,9 +34,10 @@ public class TutorSpecification implements JdbcSpecification<Tutor> {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                tutors.add(Mapper.mapTutor(resultSet));
+                students.add(Mapper.mapStudent(resultSet));
             }
         }
-        return tutors;
+        return students;
     }
+
 }

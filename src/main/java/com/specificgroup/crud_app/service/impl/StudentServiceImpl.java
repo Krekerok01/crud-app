@@ -1,29 +1,39 @@
 package com.specificgroup.crud_app.service.impl;
 
+import static com.specificgroup.crud_app.util.Attributes.AGE;
+import static com.specificgroup.crud_app.util.Attributes.EMAIL;
+import static com.specificgroup.crud_app.util.Attributes.ID;
+import static com.specificgroup.crud_app.util.Attributes.NAME;
+import static com.specificgroup.crud_app.util.Attributes.PHONE;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.AGE_VALIDATION;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.DIGIT;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.EMAIL_VALIDATION;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.INVALID_RESULT;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.NAME_VALIDATION;
+import static com.specificgroup.crud_app.util.validation.ValidationConstants.PHONE_VALIDATION;
+
 import com.github.cliftonlabs.json_simple.JsonObject;
-import com.specificgroup.crud_app.dao.Dao;
+import com.specificgroup.crud_app.dao.StudentDao;
+import com.specificgroup.crud_app.dao.impl.specification.StudentSpecification;
 import com.specificgroup.crud_app.dto.CreateRequest;
 import com.specificgroup.crud_app.dto.UpdateRequest;
 import com.specificgroup.crud_app.entity.Student;
 import com.specificgroup.crud_app.exception.EntityNotFoundException;
 import com.specificgroup.crud_app.exception.ValidationException;
-import com.specificgroup.crud_app.service.Service;
+import com.specificgroup.crud_app.service.StudentService;
 import com.specificgroup.crud_app.util.Attributes;
-import com.specificgroup.crud_app.dao.specification.StudentsSpecification;
 import com.specificgroup.crud_app.util.validation.Validator;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
-import static com.specificgroup.crud_app.util.Attributes.*;
-import static com.specificgroup.crud_app.util.validation.ValidationConstants.*;
+public class StudentServiceImpl implements StudentService {
 
-public class StudentService implements Service {
+    private final StudentDao studentDao;
+    private final Logger logger =  Logger.getLogger(StudentServiceImpl.class.getName());
 
-    private final Dao<Student> studentDao;
-    private final Logger logger =  Logger.getLogger(StudentService.class.getName());
-
-    public StudentService(Dao<Student> studentDao) {
+    public StudentServiceImpl(StudentDao studentDao) {
         this.studentDao = studentDao;
     }
 
@@ -127,12 +137,12 @@ public class StudentService implements Service {
         }catch (NullPointerException e) {
             validation = false;
         }
-        result = validation ? studentDao.getBySpecification(new StudentsSpecification(attributes)) : result;
+        result = validation ? studentDao.getBySpecification(new StudentSpecification(attributes)) : result;
         return result;
     }
 
     private Long getContactDetailIdByStudentId(Long id) {
-        Long contactDetailsId = studentDao.getContactDetailsIdByMainEntityId(id);
+        Long contactDetailsId = studentDao.getContactDetailsIdByStudentId(id);
         if (contactDetailsId == null) throw new EntityNotFoundException();
         return contactDetailsId;
     }
