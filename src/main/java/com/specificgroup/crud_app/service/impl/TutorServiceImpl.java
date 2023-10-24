@@ -44,16 +44,16 @@ public class TutorServiceImpl implements TutorService {
         if (createRequest != null) {
             try {
                 Validator<CreateRequest> validator = Validator.of(createRequest)
-                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name is not a string")
-                        .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization is not a string")
+                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name can contains only letters")
+                        .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization can contains only letters and spaces")
                         .validator(request -> !request.getSpecialization().trim().isEmpty(), "Specialization cannot be empty")
                         .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                         .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
-                if (!validator.isEmpty()) throw new ValidationException();
+                if (!validator.isEmpty()) throw new ValidationException(validator.getMessagesString());
 
                 result = tutorDao.create(createRequest);
-            }catch (NullPointerException e) {
-                throw new ValidationException();
+            } catch (NullPointerException e) {
+                throw new ValidationException("All fields are required.");
             }
         }
         return result;
@@ -89,18 +89,22 @@ public class TutorServiceImpl implements TutorService {
         logger.info("Updating information for tutor with id=" + updateRequest.getId());
         long result = INVALID_RESULT;
         if (updateRequest != null) {
-            Validator<UpdateRequest> validator = Validator.of(updateRequest)
-                    .validator(request -> request.getId().matches(DIGIT), "Tutor id is not digit.")
-                    .validator(request -> request.getName().matches(NAME_VALIDATION), "Name is not a string")
-                    .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization is not a string")
-                    .validator(request -> !request.getSpecialization().trim().isEmpty(), "Specialization cannot be empty")
-                    .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
-                    .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+            try {
+                Validator<UpdateRequest> validator = Validator.of(updateRequest)
+                        .validator(request -> request.getId().matches(DIGIT), "Tutor id is not digit.")
+                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name can contains only letters")
+                        .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization can contains only letters and spaces")
+                        .validator(request -> !request.getSpecialization().trim().isEmpty(), "Specialization cannot be empty")
+                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
+                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
-            if (!validator.isEmpty()) throw new ValidationException();
+                if (!validator.isEmpty()) throw new ValidationException(validator.getMessagesString());
 
-            Long contactDetailsId = getContactDetailIdByTutorId(Long.parseLong(updateRequest.getId()));
-            result = tutorDao.update(updateRequest, contactDetailsId);
+                Long contactDetailsId = getContactDetailIdByTutorId(Long.parseLong(updateRequest.getId()));
+                result = tutorDao.update(updateRequest, contactDetailsId);
+            } catch (NullPointerException e){
+                throw new ValidationException("All fields are required.");
+            }
         }
         return result;
     }
@@ -128,8 +132,8 @@ public class TutorServiceImpl implements TutorService {
             attributes.forEach((k, v) -> {
                 switch (k) {
                     case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
-                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Incorrect name");
-                    case SPECIALIZATION -> validator.validator(var -> var.get(SPECIALIZATION).matches(SPECIALIZATION_VALIDATION), "Incorrect specialization");
+                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Name can contains only letters");
+                    case SPECIALIZATION -> validator.validator(var -> var.get(SPECIALIZATION).matches(SPECIALIZATION_VALIDATION), "Specialization can contains only letters and spaces");
                     case PHONE -> validator.validator(var -> var.get(PHONE).matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
                     case EMAIL -> validator.validator(var -> var.get(EMAIL).matches(EMAIL_VALIDATION), "Valid email is required.");
                 }
@@ -144,7 +148,7 @@ public class TutorServiceImpl implements TutorService {
 
     private Long getContactDetailIdByTutorId(Long id) {
         Long contactDetailsId = tutorDao.getContactDetailsIdByTutorId(id);
-        if (contactDetailsId == null) throw new EntityNotFoundException();
+        if (contactDetailsId == null) throw new EntityNotFoundException("Not found tutor with id=" + id);
         return contactDetailsId;
     }
 }

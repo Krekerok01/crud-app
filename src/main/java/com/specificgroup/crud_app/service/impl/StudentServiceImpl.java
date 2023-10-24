@@ -44,16 +44,16 @@ public class StudentServiceImpl implements StudentService {
         if (createRequest != null) {
             try {
                 Validator<CreateRequest> validator = Validator.of(createRequest)
-                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name is not a string")
-                        .validator(request -> request.getAge().matches(AGE_VALIDATION), "Age is not a digit")
+                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name can contains only letters")
+                        .validator(request -> request.getAge().matches(AGE_VALIDATION), "Age must be a positive number")
                         .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
                         .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
-                if (!validator.isEmpty()) throw new ValidationException();
+                if (!validator.isEmpty()) throw new ValidationException(validator.getMessagesString());
 
                 result = studentDao.create(createRequest);
-            }catch (NullPointerException e) {
-                throw new ValidationException();
+            } catch (NullPointerException e) {
+                throw new ValidationException("All fields are required.");
             }
         }
         return result;
@@ -89,17 +89,21 @@ public class StudentServiceImpl implements StudentService {
         logger.info("Updating information for a student." + updateRequest.getId());
         long result = INVALID_RESULT;
         if (updateRequest != null) {
-            Validator<UpdateRequest> validator = Validator.of(updateRequest)
-                    .validator(request -> request.getId().matches(DIGIT), "Student id is not digit.")
-                    .validator(request -> request.getName().matches(NAME_VALIDATION), "Name is not a string")
-                    .validator(request -> request.getAge().matches(AGE_VALIDATION), "Age is not a digit")
-                    .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
-                    .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+            try {
+                Validator<UpdateRequest> validator = Validator.of(updateRequest)
+                        .validator(request -> request.getId().matches(DIGIT), "Student id is not digit.")
+                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name can contains only letters")
+                        .validator(request -> request.getAge().matches(AGE_VALIDATION), "Age must be a positive number")
+                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
+                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
 
-            if (!validator.isEmpty()) throw new ValidationException();
-            Long contactDetailsId = getContactDetailIdByStudentId(Long.parseLong(updateRequest.getId()));
+                if (!validator.isEmpty()) throw new ValidationException(validator.getMessagesString());
+                Long contactDetailsId = getContactDetailIdByStudentId(Long.parseLong(updateRequest.getId()));
 
-            result = studentDao.update(updateRequest, contactDetailsId);
+                result = studentDao.update(updateRequest, contactDetailsId);
+            } catch (NullPointerException e){
+                throw new ValidationException("All fields are required.");
+            }
         }
         return result;
     }
@@ -127,8 +131,8 @@ public class StudentServiceImpl implements StudentService {
             attributes.forEach((k, v) -> {
                 switch (k) {
                     case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
-                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Incorrect name");
-                    case AGE -> validator.validator(var -> var.get(AGE).matches(AGE_VALIDATION), "Incorrect age");
+                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Name can contains only letters");
+                    case AGE -> validator.validator(var -> var.get(AGE).matches(AGE_VALIDATION), "Age must be a positive number");
                     case PHONE -> validator.validator(var -> var.get(PHONE).matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
                     case EMAIL -> validator.validator(var -> var.get(EMAIL).matches(EMAIL_VALIDATION), "Valid email is required.");
                 }
@@ -143,7 +147,7 @@ public class StudentServiceImpl implements StudentService {
 
     private Long getContactDetailIdByStudentId(Long id) {
         Long contactDetailsId = studentDao.getContactDetailsIdByStudentId(id);
-        if (contactDetailsId == null) throw new EntityNotFoundException();
+        if (contactDetailsId == null) throw new EntityNotFoundException("Not found student with id=" + id);
         return contactDetailsId;
     }
 }

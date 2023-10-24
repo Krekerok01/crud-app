@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 public class Validator<T> {
@@ -37,5 +38,10 @@ public class Validator<T> {
 
     public List<String> getMessages(){
         return messages;
+    }
+
+    public String getMessagesString(){
+        return messages.stream()
+                .collect(Collectors.joining("\n"));
     }
 }
