@@ -36,9 +36,7 @@ public class Server {
 
     public void stop() {
         logger.info("Server stopping");
-        if (ConnectionPool.INSTANCE == null){
-            ConnectionPool.INSTANCE.destroyPool();
-        }
+        ConnectionPool.INSTANCE.destroyPool();
         server.stop(1);
         logger.info("Server successfully stopped");
     }
