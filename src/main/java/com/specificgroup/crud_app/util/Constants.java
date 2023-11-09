@@ -1,11 +1,17 @@
 package com.specificgroup.crud_app.util;
 
+/**
+ * Application constants.
+ */
 public final class Constants {
 
     private Constants() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * HTTP method constants for the application.
+     */
     public static class HttpMethod {
 
         private HttpMethod() {
@@ -18,6 +24,9 @@ public final class Constants {
         public static final String DELETE = "DELETE";
     }
 
+    /**
+     * HTTP response status constants for the application.
+     */
     public static class HttpResponseStatus {
 
         private HttpResponseStatus() {
@@ -32,9 +41,12 @@ public final class Constants {
 
     }
 
-    public static class ExceptionMessage {
+    /**
+     * Messages constants for the application.
+     */
+    public static class Message {
 
-        private ExceptionMessage() {
+        private Message() {
             throw new UnsupportedOperationException();
         }
 
@@ -47,6 +59,9 @@ public final class Constants {
         public static final String EMPTY_SPECIALIZATION = "Specialization cannot be empty";
     }
 
+    /**
+     * URL constants for the application.
+     */
     public static class UrlPath {
 
         private UrlPath() {
@@ -57,6 +72,9 @@ public final class Constants {
         public static final String TUTOR_PATH = "/tutors";
     }
 
+    /**
+     * SQL Insert request constants for the application.
+     */
     public final static class Insert {
 
         private Insert() {
@@ -73,6 +91,9 @@ public final class Constants {
 
     }
 
+    /**
+     * SQL Select request constants for the application.
+     */
     public final static class Select {
 
         private Select() {
@@ -108,6 +129,9 @@ public final class Constants {
 
     }
 
+    /**
+     * SQL Update request constants for the application.
+     */
     public final static class Update {
 
         private Update() {
@@ -128,6 +152,9 @@ public final class Constants {
 
     }
 
+    /**
+     * SQL Delete request constants for the application.
+     */
     public final static class Delete {
         private Delete() {
             throw new UnsupportedOperationException();
@@ -137,6 +164,9 @@ public final class Constants {
 
     }
 
+    /**
+     * SQL Table names constants for the application.
+     */
     public final static class Tables {
 
         private Tables() {

@@ -5,7 +5,7 @@ import static com.specificgroup.crud_app.util.Attributes.EMAIL;
 import static com.specificgroup.crud_app.util.Attributes.ID;
 import static com.specificgroup.crud_app.util.Attributes.NAME;
 import static com.specificgroup.crud_app.util.Attributes.PHONE;
-import static com.specificgroup.crud_app.util.Constants.ExceptionMessage.*;
+import static com.specificgroup.crud_app.util.Constants.Message.*;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.AGE_VALIDATION;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.DIGIT;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.EMAIL_VALIDATION;
@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * {@inheritDoc}
+ */
 public class StudentServiceImpl implements StudentService {
 
     private final StudentDao studentDao;
@@ -38,6 +41,9 @@ public class StudentServiceImpl implements StudentService {
         this.studentDao = studentDao;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long create(CreateRequest createRequest) {
         logger.info("Creating a student.");
@@ -60,6 +66,9 @@ public class StudentServiceImpl implements StudentService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<JsonObject> get(Map<Attributes, String> attributes) {
         logger.info("Getting a list of students.");
@@ -85,6 +94,9 @@ public class StudentServiceImpl implements StudentService {
         return jsonObjects;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long update(UpdateRequest updateRequest) {
         logger.info("Updating information for a student." + updateRequest.getId());
@@ -109,6 +121,9 @@ public class StudentServiceImpl implements StudentService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean deleteById(String id) {
         logger.info("Deleting a student with id=" + id);

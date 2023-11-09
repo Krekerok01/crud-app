@@ -39,7 +39,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
+/**
+ * {@inheritDoc}
+ */
 public class StudentDaoImpl implements StudentDao {
     private static ConnectionPool connectionPool;
     private final Logger logger =  Logger.getLogger(StudentDaoImpl.class.getName());
@@ -50,6 +52,9 @@ public class StudentDaoImpl implements StudentDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long create(CreateRequest request) {
         long result = INVALID_RESULT;
@@ -91,6 +96,9 @@ public class StudentDaoImpl implements StudentDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Student> getBySpecification(StudentSpecification specification) {
         String sql = SELECT.formatted(SELECT_SETTING_STUDENTS, TABLE_STUDENTS);
@@ -106,6 +114,9 @@ public class StudentDaoImpl implements StudentDao {
         return students;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Student> get() {
         String sql = SELECT_WITHOUT_ATTRIBUTES.formatted(SELECT_SETTING_STUDENTS, TABLE_STUDENTS);
@@ -124,6 +135,9 @@ public class StudentDaoImpl implements StudentDao {
         return students;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long update(UpdateRequest request, Long contactDetailsId) {
         long result = INVALID_RESULT;
@@ -166,6 +180,9 @@ public class StudentDaoImpl implements StudentDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean deleteByContactDetailId(Long contactDetailsId) {
         int result;
@@ -181,6 +198,9 @@ public class StudentDaoImpl implements StudentDao {
         return result == 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getContactDetailsIdByStudentId(Long id) {
         String sqlQuery = SELECT_CONTACT_DETAIL_ID_BY_ENTITY_ID.formatted(TABLE_STUDENTS);
@@ -216,26 +236,53 @@ public class StudentDaoImpl implements StudentDao {
         return sqlBuilder.toString();
     }
 
+    /**
+     * Builder sets setting for StudentDaoImpl
+     */
     public static class Builder {
 
         private final Map<String, String> properties = new HashMap<>();
         private ConnectionPoolAbstract.Type type;
 
+        /**
+         * Provides method that set properties for StudentDaoImpl
+         *
+         * @param key   that key need to use from PropertiesFile
+         * @param value a string value
+         * @return itself
+         */
         public Builder property(String key, String value) {
             properties.put(key, value);
             return this;
         }
 
+        /**
+         * Provides method that set properties for StudentDaoImpl
+         *
+         * @param properties a set of the properties
+         * @return itself
+         */
         public Builder property(Map<String, String> properties) {
             this.properties.putAll(properties);
             return this;
         }
 
+        /**
+         * Provides method that set type for loading StudentDaoImpl
+         *
+         * @param type a type of ConnectionPoolAbstract.Type
+         * @return itself
+         */
         public Builder type(ConnectionPoolAbstract.Type type) {
             this.type = type;
             return this;
         }
 
+        /**
+         * Create StudentDaoImpl
+         *
+         * @return a StudentDaoImpl
+         */
         public StudentDaoImpl build() {
             return new StudentDaoImpl(this);
         }

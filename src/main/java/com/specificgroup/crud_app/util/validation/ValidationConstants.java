@@ -1,5 +1,8 @@
 package com.specificgroup.crud_app.util.validation;
 
+/**
+ * Provides constant for validation.
+ */
 public class ValidationConstants {
     public static final String DIGIT = "\\d+";
     public static final String NAME_VALIDATION = "[a-zA-Z]+";

@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
+/**
+ * The server.
+ */
 public class Server {
 
     private HttpServer server;
@@ -21,6 +23,9 @@ public class Server {
         this.apiHandlers.putAll(apiHandlers);
     }
 
+    /**
+     * The method that starts server.
+     */
     public void start() {
         try {
             server = HttpServer.create();
@@ -34,6 +39,9 @@ public class Server {
         }
     }
 
+    /**
+     * The method that stops server.
+     */
     public void stop() {
         logger.info("Server stopping");
         ConnectionPool.INSTANCE.destroyPool();

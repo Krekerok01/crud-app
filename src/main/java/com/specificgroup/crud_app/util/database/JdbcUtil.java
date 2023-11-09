@@ -10,7 +10,9 @@ import java.util.Queue;
 
 import static com.specificgroup.crud_app.util.Constants.Select.*;
 
-
+/**
+ * Util class provides methods for create request to database
+ */
 public class JdbcUtil {
 
     public static void setStatement(PreparedStatement preparedStatement, Object[] seq) throws SQLException {

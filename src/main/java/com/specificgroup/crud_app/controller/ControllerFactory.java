@@ -10,6 +10,9 @@ import java.util.Map;
 import static com.specificgroup.crud_app.util.database.connection.ConnectionPoolAbstract.Type.DEFAULT;
 import static com.specificgroup.crud_app.util.database.connection.ConnectionPoolAbstract.Type.FLEXIBLE;
 
+/**
+ * The class provides designer patter factory method for create different controllers depend on a demand.
+ */
 public class ControllerFactory {
 
     public static Controller newTutorController() {

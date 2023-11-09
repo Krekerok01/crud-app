@@ -19,6 +19,9 @@ import java.util.Optional;
 import static com.specificgroup.crud_app.util.Constants.HttpMethod.*;
 import static com.specificgroup.crud_app.util.Constants.HttpResponseStatus.*;
 
+/**
+ * Provides methods CRUD and support methods for processing http request and response.
+ */
 public abstract class Controller {
 
     static final String CREATE_REQUEST = "/.+/create";
@@ -29,14 +32,44 @@ public abstract class Controller {
     static final String REQUEST_ATTRIBUTES_DELIMITER = "&";
     static final String REQUEST_ATTRIBUTE_DELIMITER = "=";
 
+    /**
+     * Processing a http request for create element in database.
+     *
+     * @param httpExchange a http exchange.
+     * @return a long result.
+     */
     abstract Long create(final HttpExchange httpExchange);
 
+    /**
+     * Processing a http request for find(get) element in database.
+     *
+     * @param httpExchange a http exchange.
+     * @return a list of json objects.
+     */
     abstract List<JsonObject> get(final HttpExchange httpExchange);
 
+    /**
+     * Processing a http request for update element in database.
+     *
+     * @param httpExchange a http exchange.
+     * @return a long result.
+     */
     abstract Long update(final HttpExchange httpExchange);
 
+    /**
+     * Processing a http request for delete element in database.
+     *
+     * @param httpExchange a http exchange.
+     * @return a boolean result.
+     */
     abstract boolean delete(final HttpExchange httpExchange);
 
+    /**
+     * The main method that processing request method and delivering particular request in right method.
+     *
+     * @param httpExchange a http exchange.
+     * @throws IOException when a controller encounters a problem.
+     */
     public void execute(final HttpExchange httpExchange) throws IOException {
         String requestMethod = httpExchange.getRequestMethod();
         String requestType = httpExchange.getRequestURI().getPath();
@@ -89,6 +122,13 @@ public abstract class Controller {
         }
     }
 
+    /**
+     * The method reads attributes from url and parsing their.
+     *
+     * @param uri a url.
+     * @param key a particular json attribute from attributes.
+     * @return optional string attribute.
+     */
     protected Optional<String> readAttributes(final URI uri, JsonKey key) {
         final String path = uri.getQuery();
         return path != null ? Arrays.stream(path.split(REQUEST_ATTRIBUTES_DELIMITER))
@@ -97,6 +137,12 @@ public abstract class Controller {
                 .findFirst() : Optional.empty();
     }
 
+    /**
+     * The method reads request from httpExchange and creates JsonObject.
+     *
+     * @param httpExchange a http exchange.
+     * @return a json object.
+     */
     protected JsonObject readRequestFromJson(final HttpExchange httpExchange) {
         JsonObject deserialize = null;
         try (InputStream requestBody = httpExchange.getRequestBody();
@@ -110,6 +156,12 @@ public abstract class Controller {
         return deserialize;
     }
 
+    /**
+     * The method search attributes from url.
+     *
+     * @param requestURI a url.
+     * @param attributes a container for attributes.
+     */
     protected void searchAttributeUrl(URI requestURI, Map<Attributes, String> attributes) {
         Arrays.stream(Attributes.values())
                 .forEach(at -> {

@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
+/**
+ * {@inheritDoc}
+ */
 class StudentController extends Controller {
 
     private final StudentService studentService;
@@ -28,6 +30,9 @@ class StudentController extends Controller {
         this.studentService = studentService;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     Long create(final HttpExchange httpExchange) {
         JsonObject jsonObject = readRequestFromJson(httpExchange);
@@ -42,6 +47,9 @@ class StudentController extends Controller {
         return studentService.create(createRequest);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     List<JsonObject> get(HttpExchange httpExchange) {
         URI requestURI = httpExchange.getRequestURI();
@@ -50,6 +58,9 @@ class StudentController extends Controller {
         return studentService.get(attributes);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     Long update(final HttpExchange httpExchange) {
         JsonObject jsonObject = readRequestFromJson(httpExchange);
@@ -65,6 +76,9 @@ class StudentController extends Controller {
         return studentService.update(build);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     boolean delete(final HttpExchange httpExchange) {
         URI uri = httpExchange.getRequestURI();

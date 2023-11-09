@@ -25,6 +25,9 @@ import static com.specificgroup.crud_app.util.Constants.Tables.TABLE_CONTACT_DET
 import static com.specificgroup.crud_app.util.Constants.Tables.TABLE_TUTORS;
 import static com.specificgroup.crud_app.util.Constants.Update.*;
 
+/**
+ * {@inheritDoc}
+ */
 public class TutorDaoImpl implements TutorDao {
     private static ConnectionPool connectionPool;
     private final Logger logger =  Logger.getLogger(TutorDaoImpl.class.getName());
@@ -35,6 +38,9 @@ public class TutorDaoImpl implements TutorDao {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long create(CreateRequest request) {
         long result = INVALID_RESULT;
@@ -76,6 +82,9 @@ public class TutorDaoImpl implements TutorDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Tutor> getBySpecification(TutorSpecification specification) {
         String sql = SELECT.formatted(SELECT_SETTING_TUTORS, TABLE_TUTORS);
@@ -89,6 +98,9 @@ public class TutorDaoImpl implements TutorDao {
         return tutors;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Tutor> get() {
         String sql = SELECT_WITHOUT_ATTRIBUTES.formatted(SELECT_SETTING_TUTORS, TABLE_TUTORS);
@@ -107,6 +119,9 @@ public class TutorDaoImpl implements TutorDao {
         return tutors;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long update(UpdateRequest request, Long contactDetailsId) {
         long result = INVALID_RESULT;
@@ -149,6 +164,9 @@ public class TutorDaoImpl implements TutorDao {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean deleteByContactDetailId(Long contactDetailsId) {
         int result;
@@ -163,6 +181,9 @@ public class TutorDaoImpl implements TutorDao {
         return result == 1;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getContactDetailsIdByTutorId(Long id) {
         String sqlQuery = SELECT_CONTACT_DETAIL_ID_BY_ENTITY_ID.formatted(TABLE_TUTORS);
@@ -198,26 +219,53 @@ public class TutorDaoImpl implements TutorDao {
         return sqlBuilder.toString();
     }
 
+    /**
+     * Builder sets setting for TutorDaoImpl
+     */
     public static class Builder {
 
         private final Map<String, String> properties = new HashMap<>();
         private ConnectionPoolAbstract.Type type;
 
+        /**
+         * Provides method that set properties for TutorDaoImpl
+         *
+         * @param key   that key need to use from PropertiesFile
+         * @param value a string value
+         * @return itself
+         */
         public Builder property(String key, String value) {
             properties.put(key, value);
             return this;
         }
 
+        /**
+         * Provides method that set properties for TutorDaoImpl
+         *
+         * @param properties a set of the properties
+         * @return itself
+         */
         public Builder property(Map<String, String> properties) {
             this.properties.putAll(properties);
             return this;
         }
 
+        /**
+         * Provides method that set type for loading TutorDaoImpl
+         *
+         * @param type a type of ConnectionPoolAbstract.Type
+         * @return itself
+         */
         public Builder type(ConnectionPoolAbstract.Type type) {
             this.type = type;
             return this;
         }
 
+        /**
+         * Create TutorDaoImpl
+         *
+         * @return a TutorDaoImpl
+         */
         public TutorDaoImpl build() {
             return new TutorDaoImpl(this);
         }

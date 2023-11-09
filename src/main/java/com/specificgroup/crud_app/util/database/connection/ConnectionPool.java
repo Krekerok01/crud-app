@@ -66,6 +66,12 @@ public enum ConnectionPool {
         }
     }
 
+    /**
+     * On the one hand method will return connection from connection poll if connection is existing and valid.
+     * On the other hand will create new connection and return that.
+     *
+     * @return Connection to database.
+     */
     public Connection openConnection() {
         Connection connection = null;
         try {
@@ -80,6 +86,9 @@ public enum ConnectionPool {
         return connection;
     }
 
+    /**
+     * Method creates a proxy connection, when connection is closed, proxy return it to the BlockingQueue.
+     */
     private void createProxyConnection() {
         final Connection connection;
         try {
@@ -95,6 +104,9 @@ public enum ConnectionPool {
         }
     }
 
+    /**
+     * Close all connections in the pool.
+     */
     public void destroyPool() {
         for (Connection connection : sourceConnection) {
             try {

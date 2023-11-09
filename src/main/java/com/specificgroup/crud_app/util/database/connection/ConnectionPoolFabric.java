@@ -6,6 +6,9 @@ import java.util.Map;
 
 import static com.specificgroup.crud_app.util.database.connection.ConnectionPoolFabric.PropertiesFile.*;
 
+/**
+ * Provides design pattern fabric method for create different connection to database depends on setting
+ */
 public class ConnectionPoolFabric {
 
     private ConnectionPoolFabric() {

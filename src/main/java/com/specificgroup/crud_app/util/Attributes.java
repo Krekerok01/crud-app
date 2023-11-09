@@ -2,6 +2,9 @@ package com.specificgroup.crud_app.util;
 
 import com.github.cliftonlabs.json_simple.JsonKey;
 
+/**
+ * Provides attributes for processing http response and request.
+ */
 public enum Attributes implements JsonKey {
     ID,
     NAME,

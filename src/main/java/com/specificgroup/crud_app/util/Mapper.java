@@ -7,6 +7,9 @@ import com.specificgroup.crud_app.entity.Tutor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Util class for mapping entities and result set objects
+ */
 public class Mapper {
 
     public static Student mapStudent(ResultSet resultSet) throws SQLException {

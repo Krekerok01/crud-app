@@ -11,8 +11,16 @@ import java.io.OutputStream;
 import static com.specificgroup.crud_app.util.Constants.HttpResponseStatus.STATUS_BAD_REQUEST;
 import static com.specificgroup.crud_app.util.Constants.HttpResponseStatus.STATUS_NOT_FOUND;
 
+/**
+ * Provides main handler for all http request and response.
+ */
 public record ApiHandler(Controller controller) {
 
+    /**
+     * The main method process httpExchange.
+     *
+     * @param httpExchange a http exchange.
+     */
     public void handle(final HttpExchange httpExchange) {
         try {
             controller.execute(httpExchange);

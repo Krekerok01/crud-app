@@ -5,7 +5,7 @@ import static com.specificgroup.crud_app.util.Attributes.ID;
 import static com.specificgroup.crud_app.util.Attributes.NAME;
 import static com.specificgroup.crud_app.util.Attributes.PHONE;
 import static com.specificgroup.crud_app.util.Attributes.SPECIALIZATION;
-import static com.specificgroup.crud_app.util.Constants.ExceptionMessage.*;
+import static com.specificgroup.crud_app.util.Constants.Message.*;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.DIGIT;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.EMAIL_VALIDATION;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.INVALID_RESULT;
@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * {@inheritDoc}
+ */
 public class TutorServiceImpl implements TutorService {
 
     private final TutorDao tutorDao;
@@ -38,6 +41,9 @@ public class TutorServiceImpl implements TutorService {
         this.tutorDao = tutorDao;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long create(CreateRequest createRequest) {
         logger.info("Creating a tutor.");
@@ -60,6 +66,9 @@ public class TutorServiceImpl implements TutorService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<JsonObject> get(Map<Attributes, String> attributes) {
         logger.info("Getting a list of tutors.");
@@ -85,6 +94,9 @@ public class TutorServiceImpl implements TutorService {
         return jsonObjects;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long update(UpdateRequest updateRequest) {
         logger.info("Updating information for tutor with id=" + updateRequest.getId());
@@ -110,6 +122,9 @@ public class TutorServiceImpl implements TutorService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean deleteById(String id) {
         logger.info("Deleting a tutor with id=" + id);

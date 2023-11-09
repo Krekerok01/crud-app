@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-
+/**
+ * Util class for searching properties in application.properties file.
+ */
 public class PropertiesUtil {
 
     private static final Properties PROPERTIES = new Properties();

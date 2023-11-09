@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.*;
 
 
+/**
+ * Provides method for concat sql request and search filter.
+ */
 public class StudentSpecification {
 
     private final Map<Attributes, String> attributes;
@@ -21,6 +24,12 @@ public class StudentSpecification {
         this.attributes = attributes;
     }
 
+    /**
+     * Create sql request in database for search elements.
+     * @param connection connection to database
+     * @return a list of element
+     * @throws SQLException a sql exception
+     */
     public List<Student> searchFilter(Connection connection, String sql) throws SQLException {
         List<Student> students = new ArrayList<>();
         StringBuilder sqlBuilder = new StringBuilder(sql);
