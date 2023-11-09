@@ -84,8 +84,10 @@ public enum ConnectionPool {
         final Connection connection;
         try {
             connection = postgreSqlDataSource().getConnection();
-            Object proxyConnection = Proxy.newProxyInstance(ConnectionPool.class.getClassLoader(), new Class[]{Connection.class},
-                    (proxy, method, args) -> method.getName().equals("close") ? pool.add((Connection) proxy) : method.invoke(connection, args));
+            Object proxyConnection = Proxy.newProxyInstance(ConnectionPool.class.getClassLoader(),
+                    new Class[]{Connection.class},
+                    (proxy, method, args) -> method.getName().equals("close") ?
+                            pool.add((Connection) proxy) : method.invoke(connection, args));
             pool.add((Connection) proxyConnection);
             sourceConnection.add(connection);
         } catch (SQLException e) {

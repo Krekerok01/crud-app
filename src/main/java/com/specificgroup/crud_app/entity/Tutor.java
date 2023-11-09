@@ -36,7 +36,10 @@ public class Tutor {
         if (this == o) return true;
         if (!(o instanceof Tutor)) return false;
         Tutor tutor = (Tutor) o;
-        return Objects.equals(id, tutor.id) && Objects.equals(name, tutor.name) && Objects.equals(specialization, tutor.specialization) && Objects.equals(contactDetails, tutor.contactDetails);
+        return Objects.equals(id, tutor.id) &&
+               Objects.equals(name, tutor.name) &&
+               Objects.equals(specialization, tutor.specialization) &&
+               Objects.equals(contactDetails, tutor.contactDetails);
     }
 
     @Override

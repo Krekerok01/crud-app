@@ -30,7 +30,9 @@ public class ContactDetails {
         if (this == o) return true;
         if (!(o instanceof ContactDetails)) return false;
         ContactDetails that = (ContactDetails) o;
-        return Objects.equals(id, that.id) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email);
+        return Objects.equals(id, that.id) &&
+               Objects.equals(phone, that.phone) &&
+               Objects.equals(email, that.email);
     }
 
     @Override

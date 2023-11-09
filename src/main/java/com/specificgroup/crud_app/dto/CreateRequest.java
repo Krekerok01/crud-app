@@ -42,7 +42,11 @@ public class CreateRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CreateRequest that)) return false;
-        return Objects.equals(name, that.name) && Objects.equals(age, that.age) && Objects.equals(specialization, that.specialization) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email);
+        return Objects.equals(name, that.name) &&
+               Objects.equals(age, that.age) &&
+               Objects.equals(specialization, that.specialization) &&
+               Objects.equals(phone, that.phone) &&
+               Objects.equals(email, that.email);
     }
 
     @Override

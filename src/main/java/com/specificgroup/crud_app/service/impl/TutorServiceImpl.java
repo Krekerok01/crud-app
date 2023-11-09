@@ -5,6 +5,7 @@ import static com.specificgroup.crud_app.util.Attributes.ID;
 import static com.specificgroup.crud_app.util.Attributes.NAME;
 import static com.specificgroup.crud_app.util.Attributes.PHONE;
 import static com.specificgroup.crud_app.util.Attributes.SPECIALIZATION;
+import static com.specificgroup.crud_app.util.Constants.ExceptionMessage.*;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.DIGIT;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.EMAIL_VALIDATION;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.INVALID_RESULT;
@@ -44,11 +45,11 @@ public class TutorServiceImpl implements TutorService {
         if (createRequest != null) {
             try {
                 Validator<CreateRequest> validator = Validator.of(createRequest)
-                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name can contains only letters")
-                        .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization can contains only letters and spaces")
-                        .validator(request -> !request.getSpecialization().trim().isEmpty(), "Specialization cannot be empty")
-                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
-                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+                        .validator(request -> request.getName().matches(NAME_VALIDATION), WRONG_NAME)
+                        .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), WRONG_SPECIALIZATION)
+                        .validator(request -> !request.getSpecialization().trim().isEmpty(), EMPTY_SPECIALIZATION)
+                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), WRONG_EMAIL)
+                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), WRONG_PHONE);
                 if (!validator.isEmpty()) throw new ValidationException(validator.getMessagesString());
 
                 result = tutorDao.create(createRequest);
@@ -91,12 +92,12 @@ public class TutorServiceImpl implements TutorService {
         if (updateRequest != null) {
             try {
                 Validator<UpdateRequest> validator = Validator.of(updateRequest)
-                        .validator(request -> request.getId().matches(DIGIT), "Tutor id is not digit.")
-                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name can contains only letters")
-                        .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), "Specialization can contains only letters and spaces")
-                        .validator(request -> !request.getSpecialization().trim().isEmpty(), "Specialization cannot be empty")
-                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
-                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+                        .validator(request -> request.getId().matches(DIGIT), WRONG_ID)
+                        .validator(request -> request.getName().matches(NAME_VALIDATION), WRONG_NAME)
+                        .validator(request -> request.getSpecialization().matches(SPECIALIZATION_VALIDATION), WRONG_SPECIALIZATION)
+                        .validator(request -> !request.getSpecialization().trim().isEmpty(), EMPTY_SPECIALIZATION)
+                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), WRONG_EMAIL)
+                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), WRONG_PHONE);
 
                 if (!validator.isEmpty()) throw new ValidationException(validator.getMessagesString());
 
@@ -115,9 +116,10 @@ public class TutorServiceImpl implements TutorService {
         boolean result = false;
         if (id != null) {
             try {
-                Validator<String> validatorId = Validator.of(id).validator(i -> i.matches(DIGIT), "Tutor id is not digit.");
+                Validator<String> validatorId = Validator.of(id).validator(i -> i.matches(DIGIT), WRONG_ID);
                 Long tutorId = Long.parseLong(id);
-                result = validatorId.isEmpty() && tutorDao.deleteByContactDetailId(getContactDetailIdByTutorId(tutorId));
+                result = validatorId.isEmpty() &&
+                        tutorDao.deleteByContactDetailId(getContactDetailIdByTutorId(tutorId));
             } catch (NullPointerException e){
                 return false;
             }
@@ -131,11 +133,11 @@ public class TutorServiceImpl implements TutorService {
         try {
             attributes.forEach((k, v) -> {
                 switch (k) {
-                    case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
-                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Name can contains only letters");
-                    case SPECIALIZATION -> validator.validator(var -> var.get(SPECIALIZATION).matches(SPECIALIZATION_VALIDATION), "Specialization can contains only letters and spaces");
-                    case PHONE -> validator.validator(var -> var.get(PHONE).matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
-                    case EMAIL -> validator.validator(var -> var.get(EMAIL).matches(EMAIL_VALIDATION), "Valid email is required.");
+                    case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), WRONG_ID);
+                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), WRONG_NAME);
+                    case SPECIALIZATION -> validator.validator(var -> var.get(SPECIALIZATION).matches(SPECIALIZATION_VALIDATION), WRONG_SPECIALIZATION);
+                    case PHONE -> validator.validator(var -> var.get(PHONE).matches(PHONE_VALIDATION), WRONG_PHONE);
+                    case EMAIL -> validator.validator(var -> var.get(EMAIL).matches(EMAIL_VALIDATION), WRONG_EMAIL);
                 }
             });
             validation = validator.isEmpty();

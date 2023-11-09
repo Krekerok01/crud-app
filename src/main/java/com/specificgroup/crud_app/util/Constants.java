@@ -32,6 +32,21 @@ public final class Constants {
 
     }
 
+    public static class ExceptionMessage {
+
+        private ExceptionMessage() {
+            throw new UnsupportedOperationException();
+        }
+
+        public static final String WRONG_NAME = "Name can contains only letters";
+        public static final String WRONG_AGE = "Age must be a positive number";
+        public static final String WRONG_EMAIL = "Valid email is required";
+        public static final String WRONG_PHONE = "Valid phone is required. Example: +375294682593";
+        public static final String WRONG_ID = "Id must be a digit.";
+        public static final String WRONG_SPECIALIZATION = "Specialization can contains only letters and spaces";
+        public static final String EMPTY_SPECIALIZATION = "Specialization cannot be empty";
+    }
+
     public static class UrlPath {
 
         private UrlPath() {

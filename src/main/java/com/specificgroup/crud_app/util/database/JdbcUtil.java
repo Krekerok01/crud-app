@@ -19,7 +19,8 @@ public class JdbcUtil {
         }
     }
 
-    public static void preparedRequest(StringBuilder sqlBuilder, Queue<Object> queue, Map<Attributes, String> attributes) {
+    public static void preparedRequest(StringBuilder sqlBuilder,
+                                       Queue<Object> queue, Map<Attributes, String> attributes) {
         for (Map.Entry<Attributes, String> next : attributes.entrySet()) {
             switch (next.getKey()) {
                 case ID -> {

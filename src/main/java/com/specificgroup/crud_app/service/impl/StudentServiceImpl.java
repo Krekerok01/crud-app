@@ -5,6 +5,7 @@ import static com.specificgroup.crud_app.util.Attributes.EMAIL;
 import static com.specificgroup.crud_app.util.Attributes.ID;
 import static com.specificgroup.crud_app.util.Attributes.NAME;
 import static com.specificgroup.crud_app.util.Attributes.PHONE;
+import static com.specificgroup.crud_app.util.Constants.ExceptionMessage.*;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.AGE_VALIDATION;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.DIGIT;
 import static com.specificgroup.crud_app.util.validation.ValidationConstants.EMAIL_VALIDATION;
@@ -44,10 +45,10 @@ public class StudentServiceImpl implements StudentService {
         if (createRequest != null) {
             try {
                 Validator<CreateRequest> validator = Validator.of(createRequest)
-                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name can contains only letters")
-                        .validator(request -> request.getAge().matches(AGE_VALIDATION), "Age must be a positive number")
-                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
-                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+                        .validator(request -> request.getName().matches(NAME_VALIDATION), WRONG_NAME)
+                        .validator(request -> request.getAge().matches(AGE_VALIDATION), WRONG_AGE)
+                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), WRONG_EMAIL)
+                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), WRONG_PHONE);
 
                 if (!validator.isEmpty()) throw new ValidationException(validator.getMessagesString());
 
@@ -91,11 +92,11 @@ public class StudentServiceImpl implements StudentService {
         if (updateRequest != null) {
             try {
                 Validator<UpdateRequest> validator = Validator.of(updateRequest)
-                        .validator(request -> request.getId().matches(DIGIT), "Student id is not digit.")
-                        .validator(request -> request.getName().matches(NAME_VALIDATION), "Name can contains only letters")
-                        .validator(request -> request.getAge().matches(AGE_VALIDATION), "Age must be a positive number")
-                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), "Valid email is required")
-                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
+                        .validator(request -> request.getId().matches(DIGIT), WRONG_ID)
+                        .validator(request -> request.getName().matches(NAME_VALIDATION), WRONG_NAME)
+                        .validator(request -> request.getAge().matches(AGE_VALIDATION), WRONG_AGE)
+                        .validator(request -> request.getEmail().matches(EMAIL_VALIDATION), WRONG_EMAIL)
+                        .validator(request -> request.getPhone().matches(PHONE_VALIDATION), WRONG_PHONE);
 
                 if (!validator.isEmpty()) throw new ValidationException(validator.getMessagesString());
                 Long contactDetailsId = getContactDetailIdByStudentId(Long.parseLong(updateRequest.getId()));
@@ -114,9 +115,10 @@ public class StudentServiceImpl implements StudentService {
         boolean result = false;
         if (id != null) {
             try {
-                Validator<String> validatorId = Validator.of(id).validator(i -> i.matches(DIGIT), "Student id is not digit.");
+                Validator<String> validatorId = Validator.of(id).validator(i -> i.matches(DIGIT), WRONG_ID);
                 Long studentId = Long.parseLong(validatorId.get());
-                result = validatorId.isEmpty() && studentDao.deleteByContactDetailId(getContactDetailIdByStudentId(studentId));
+                result = validatorId.isEmpty() &&
+                        studentDao.deleteByContactDetailId(getContactDetailIdByStudentId(studentId));
             } catch (NullPointerException e){
                 return false;
             }
@@ -130,11 +132,11 @@ public class StudentServiceImpl implements StudentService {
         try {
             attributes.forEach((k, v) -> {
                 switch (k) {
-                    case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), "Student id is not digit.");
-                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), "Name can contains only letters");
-                    case AGE -> validator.validator(var -> var.get(AGE).matches(AGE_VALIDATION), "Age must be a positive number");
-                    case PHONE -> validator.validator(var -> var.get(PHONE).matches(PHONE_VALIDATION), "Valid phone is required. Example: +375294682593");
-                    case EMAIL -> validator.validator(var -> var.get(EMAIL).matches(EMAIL_VALIDATION), "Valid email is required.");
+                    case ID -> validator.validator(var -> var.get(ID).matches(DIGIT), WRONG_ID);
+                    case NAME -> validator.validator(var -> var.get(NAME).matches(NAME_VALIDATION), WRONG_NAME);
+                    case AGE -> validator.validator(var -> var.get(AGE).matches(AGE_VALIDATION), WRONG_AGE);
+                    case PHONE -> validator.validator(var -> var.get(PHONE).matches(PHONE_VALIDATION), WRONG_PHONE);
+                    case EMAIL -> validator.validator(var -> var.get(EMAIL).matches(EMAIL_VALIDATION), WRONG_EMAIL);
                 }
             });
             validation = validator.isEmpty();

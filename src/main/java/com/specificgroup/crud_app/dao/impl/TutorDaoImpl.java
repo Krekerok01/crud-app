@@ -42,8 +42,10 @@ public class TutorDaoImpl implements TutorDao {
 
         Connection connection = connectionPool.openConnection();
 
-        try (PreparedStatement tutorStatement = connection.prepareStatement(tutorQuery, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement contactStatement = connection.prepareStatement(INSERT_CONTACT_DETAILS, Statement.RETURN_GENERATED_KEYS);){
+        try (PreparedStatement tutorStatement = connection
+                .prepareStatement(tutorQuery, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement contactStatement = connection
+                .prepareStatement(INSERT_CONTACT_DETAILS, Statement.RETURN_GENERATED_KEYS);){
             connection.setAutoCommit(false);
 
             Object[] contactInfo = {request.getPhone(), request.getEmail()};

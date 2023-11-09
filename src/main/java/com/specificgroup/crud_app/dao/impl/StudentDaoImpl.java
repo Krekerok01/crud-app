@@ -57,8 +57,10 @@ public class StudentDaoImpl implements StudentDao {
 
         Connection connection = connectionPool.openConnection();
 
-        try (PreparedStatement studentStatement = connection.prepareStatement(studentQuery, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement contactStatement = connection.prepareStatement(INSERT_CONTACT_DETAILS, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement studentStatement = connection
+                .prepareStatement(studentQuery, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement contactStatement = connection
+                .prepareStatement(INSERT_CONTACT_DETAILS, Statement.RETURN_GENERATED_KEYS)) {
             connection.setAutoCommit(false);
 
             Object[] contactInfo = {request.getPhone(), request.getEmail()};

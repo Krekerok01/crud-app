@@ -126,7 +126,8 @@ public abstract class Controller {
         }
     }
 
-    private void writeResponse(final HttpExchange httpExchange, List<JsonObject> jsonObjects, int status) throws IOException {
+    private void writeResponse(final HttpExchange httpExchange, List<JsonObject> jsonObjects, int status)
+            throws IOException {
         Headers responseHeaders = httpExchange.getResponseHeaders();
         StringBuilder db = new StringBuilder();
         for (JsonObject jsonObject : jsonObjects) {

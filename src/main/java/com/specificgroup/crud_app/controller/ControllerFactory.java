@@ -21,10 +21,12 @@ public class ControllerFactory {
     }
 
     public static Controller flexibleTutorController(Map<String, String> properties) {
-        return new TutorController(new TutorServiceImpl(new TutorDaoImpl.Builder().type(FLEXIBLE).property(properties).build()));
+        return new TutorController(
+                new TutorServiceImpl(new TutorDaoImpl.Builder().type(FLEXIBLE).property(properties).build()));
     }
 
     public static Controller flexibleStudentController(Map<String, String> properties) {
-        return new StudentController(new StudentServiceImpl(new StudentDaoImpl.Builder().type(FLEXIBLE).property(properties).build()));
+        return new StudentController(
+                new StudentServiceImpl(new StudentDaoImpl.Builder().type(FLEXIBLE).property(properties).build()));
     }
 }
